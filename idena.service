@@ -1,0 +1,13 @@
+[Unit]
+Description=IDENA Daemon
+After=network.target
+StartLimitIntervalSec=0
+[Service]
+User=$username
+WorkingDirectory=/home/$username/idena-go
+ExecStart=/home/$username/idena-go/idena-node --config=/home/$username/idena-go/config.json
+Restart=on-failure
+RestartSec=60
+LimitNOFILE=1000000
+[Install]
+WantedBy=multi-user.target
