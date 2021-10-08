@@ -1,5 +1,15 @@
 # Changelog
 
+## 0.1.3 (Oct 8, 2021)
+
+### Changes
+
+- Auto update function has been added
+
+### Bug Fixes
+
+- Some small bug fixes
+
 ## 0.1.2 (Oct 5, 2021)
 
 ### Changes
