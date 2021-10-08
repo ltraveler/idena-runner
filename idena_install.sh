@@ -1,4 +1,11 @@
 #!/bin/bash
+#
+#ASCII color assign
+LRED="\033[1;31m"
+YELLOW="\033[1;33m"
+LGREEN="\033[1;32m"
+LBLUE="\033[1;34m"
+NC="\033[0m" # No Color
 #Checking if the idena service exists.
 if [ -f "/etc/systemd/system/idena.service" ]
 then
@@ -42,6 +49,8 @@ cd idena-go
 #downloading specific version or the latest one
 read -p "Enter the number of the idena-go version (eg. 0.18.2) keep it empty to download the latest one: " version
 if [ -z $version ]; then version=$(curl -s https://api.github.com/repos/idena-network/idena-go/releases/latest | grep -Po '"tag_name":.*?[^\\]",' | sed 's/"tag_name": "v//g' |  sed 's/",//g') ; echo Installing version $version; fi
+touch /home/$username/idena-go/version
+echo "$version" > /home/$username/idena-go/version
 wget https://github.com/idena-network/idena-go/releases/download/v$version/idena-node-linux-$version
 #copying config.json and idena.service
 cp {config.json,idena.service} /home/$username/idena-go
@@ -101,10 +110,14 @@ done
 # kill screen before to create the idena daemon
 killall screen
 # creating idena daemon
-sed -i "s/\$username/${username}/g" idena.service
-cp idena.service /etc/systemd/system/
+sed -i "s/\$username/${username}/g" /home/$username/idena-go/idena.service
+cp /home/$username/idena-go/idena.service /etc/systemd/system/
 systemctl start idena.service
 systemctl enable idena.service
+#Checking for idena updates ones a day
+cp idena_insp.sh /home/$username/idena-go/
+chown $username:$username /home/$username/idena-go/idena_insp.sh
+crontab -l | grep -q 'idena_insp'  && echo 'entry exists' || (crontab -l 2>/dev/null; echo "0 1 * * * /home/$username/idena-go/idena_insp.sh") | crontab -
 # ufw configuration
 SSHPORT=${SSH_CLIENT##* }
 ufw disable
@@ -116,11 +129,6 @@ ufw allow ${ipfsport[0]}
 sudo ufw enable
 sudo ufw status
 # Installation has been successfully completed
-LRED="\033[1;31m"
-YELLOW="\033[1;33m"
-LGREEN="\033[1;32m"
-LBLUE="\033[1;34m"
-NC="\033[0m" # No Color
 echo -e "${LRED}IDENA NODE HAS BEEN SUCCESSFULLY INSTALLED" 
 echo -e "${LGREEN}FOR IDENA DONATIONS:${NC} 0xf041640788910fc89a211cd5bcbf518f4f14d831"
 echo -e "${YELLOW}CONTACT AUTHOR:${NC} ltraveler@protonmail.com"
