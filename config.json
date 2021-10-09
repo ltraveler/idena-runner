@@ -12,10 +12,10 @@
     "Profile": "server",
     "IpfsPort": 40405,
     "BlockPinThreshold": 1,
-    "FlipPinThreshold": 1,
-    "AllFlipsLoadingTime":18000000000000
+    "FlipPinThreshold": 1
   },
   "Sync": {
+    "AllFlipsLoadingTime":18000000000000,
     "FastSync": true
   }
 }
