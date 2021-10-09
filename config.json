@@ -15,6 +15,7 @@
     "FlipPinThreshold": 1
   },
   "Sync": {
+    "LoadAllFlips": true,
     "AllFlipsLoadingTime":18000000000000,
     "FastSync": true
   }
