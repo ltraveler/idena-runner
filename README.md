@@ -22,6 +22,15 @@ To install Idena node using this script, please folow these steps:
 7. Creating Idena Daemon and running it;
 8. Installing and running firewall based on SSH and IPFS port numbers.
 
+### About Idena Daemon?
+The script is creating a service daemon called idena. Which starts on the boot.
+
+#### You can use these command to control it:
+* `service idena status`- to check the status 
+* `service idena restart` - to restart the service
+* `service idena stop` - to stop the service
+* `service idena start` - to start the service
+
 #### Idena Donations
 
 * `0xf041640788910fc89a211cd5bcbf518f4f14d831` - **All donations are welcomed and appreciated**;
