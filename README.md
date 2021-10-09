@@ -24,21 +24,20 @@ To install Idena node using this script, please folow these steps:
 
 ### About Idena Daemon?
 The script is creating a service daemon called idena. Which starts on the boot.
-
 #### You can use these command to control it:
 * `service idena status`- to check the status 
 * `service idena restart` - to restart the service
 * `service idena stop` - to stop the service
 * `service idena start` - to start the service
 
-#### Idena Donations
+### Idena Donations
 
 * `0xf041640788910fc89a211cd5bcbf518f4f14d831` - **All donations are welcomed and appreciated**;
 
-#### Other information
+### Other information
 * If you are looking for a stable shared node service, please contact me on **Telegram**  `@ltrvlr`
 
-#### Contact information
+### Contact information
 * **Email** `ltraveler@protonmail.com`
 * **Telegram** `@ltrvlr`
 
