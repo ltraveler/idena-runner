@@ -85,7 +85,7 @@ rm idenachain.db.zip
 cd ~/idena-go
 #
 chmod +x idena-node
-screen -d -m bash -c "/home/$username/idena-go/./idena-node --config=config.json --profile=shared"
+screen -d -m bash -c "/home/$username/idena-go/./idena-node --config=config.json"
 echo Idena-node has been installed succesfully
 
 until [ -s ~/idena-go/datadir/api.key ]
