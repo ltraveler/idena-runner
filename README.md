@@ -4,7 +4,7 @@ Bash Script implementation of the Idena network node installation wizard.
 
 ## Running `idena_install.sh`
 
-Please make sure that you have a pure Ubuntu 20.04 installation.
+Please make sure that you have a pure Ubuntu 18.04 installation.
 To install Idena node using this script, please folow these steps:
 * `git clone https://github.com/ltraveler/idena-runner.git` clone the repository
 * `cd idena-runner`
