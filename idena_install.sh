@@ -60,6 +60,15 @@ if [ -z $version ]; then version=$(curl -s https://api.github.com/repos/idena-ne
 touch /home/$username/idena-go/version
 echo "$version" > /home/$username/idena-go/version
 wget https://github.com/idena-network/idena-go/releases/download/v$version/idena-node-linux-$version
+#customize config.json
+while true; do
+    read -p "Would you like to edit default config.json file?" yn
+    case $yn in
+        [Yy]* ) nano config.json; break;; 
+        [Nn]* ) break;;
+        * ) echo "Please answer yes or no.";;
+    esac
+done
 #copying config.json and idena.service
 cp {config.json,idena.service} /home/$username/idena-go
 mv idena-node-linux-$version /home/$username/idena-go/idena-node
@@ -126,7 +135,7 @@ systemctl enable idena.service
 cp idena_insp.sh /home/$username/idena-go/
 chown $username:$username /home/$username/idena-go/idena_insp.sh
 read -p "Please insert the frequency in cron schedule expressions format when the script will be checking for updates. Empty prompt will set the value to once a day at 1AM: " idupdate
-if [[ -z $idupdate ]]; then idupdate=$(echo "0 1 * * *") ; echo "Setting as $idupdate"; fi
+if [[ -z $idupdate ]]; then idupdate=$(echo "0 1 * * *") ; echo "Set as default $idupdate"; fi
 crontab -l | grep -q 'idena_insp'  && echo 'entry exists' || (crontab -l 2>/dev/null; echo "$idupdate /home/$username/idena-go/idena_insp.sh") | crontab -
 # ufw configuration
 SSHPORT=${SSH_CLIENT##* }
