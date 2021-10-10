@@ -17,12 +17,14 @@ To install Idena node using this script, please folow these steps:
 2. Creating new user and password to run the Idena node daemon;
 3. Upgrading Ubuntu packages and installing all requiered dependecies;
 4. Downloading idena-go network node based on the version that user have entered. If the input is empty the script is downloading the latest one. The version history is available [here](https://github.com/idena-network/idena-go/releases);
-5. Installing Idena-go and running it based on the config.json file from the repository;
-6. Changing API and Private keys of the node to the custom ones if the user wants so;
-7. Creating Idena Daemon and running it;
-8. Installing and running firewall based on SSH and IPFS port numbers.
+5. The script using pre-defined `config.json` file which can be changed during the installation process;
+6. Installing Idena-go and running it based on the config.json file from the repository;
+7. Changing API and Private keys of the node to the custom ones if the user wants so;
+8. Creating cron job to check for idena-go updates ones once a day. You can specify the frequency during the installation process;
+9. Creating Idena Daemon and running it;
+10. Installing and running firewall based on SSH and IPFS port numbers.
 
-### About Idena Daemon?
+### About Idena Daemon
 The script is creating a service daemon called idena. Which starts on the boot.
 #### You can use these commands to control it:
 * `service idena status`- to check the status 
