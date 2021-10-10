@@ -12,7 +12,8 @@ then
 echo "New version is available"
 service idena stop
 wget https://github.com/idena-network/idena-go/releases/download/v$latver/idena-node-linux-$latver
-chmod +x idena-node-linux-$latver  
+chmod +x idena-node-linux-$latver
+chown $username:$username idena-node-linux-$latver
 mv idena-node-linux-$latver /home/$username/idena-go/idena-node
 service idena start
 echo $latver > /home/$username/idena-go/version
