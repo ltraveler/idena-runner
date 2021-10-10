@@ -50,7 +50,7 @@ fi
 #updating Ubuntu and installing all required dependencies
 apt-get update
 apt-get upgrade -y
-apt-get install -y jq git ufw npm wget nano screen psmisc unzip
+apt-get install -y jq git ufw curl wget nano screen psmisc unzip
 #
 mkdir /home/$username/idena-go
 cd idena-go
