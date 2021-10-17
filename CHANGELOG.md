@@ -1,5 +1,16 @@
 # Changelog
 
+## 0.1.5 (Oct 17, 2021)
+
+### Changes
+
+- Multiple idena node instances installation
+
+### Bug Fixes
+
+- remove idena node instance ports from ufw in case if we are removing the service
+- small bug fixes
+
 ## 0.1.4 (Oct 9, 2021)
 
 ### Changes
@@ -10,7 +21,6 @@
 ### Bug Fixes
 
 - Small bug fixes
-
 
 ## 0.1.3 (Oct 8, 2021)
 
