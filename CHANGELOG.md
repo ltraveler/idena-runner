@@ -5,6 +5,7 @@
 ### Changes
 
 - Multiple idena node instances installation
+- Default `config.json`
 
 ### Bug Fixes
 
