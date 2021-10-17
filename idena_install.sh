@@ -15,28 +15,43 @@ CYAN="\033[0;36m"
 LCYAN="\033[1;36m"
 NC="\033[0m" # No Color
 #Checking if the idena service exists.
-if [ -f "/etc/systemd/system/idena.service" ]
+echo -e "${LYELLOW}Please enter a user name and password that you would like to use for this ${LGREEN}Idena Node Daemon Instance${NC}"
+read -p "Enter username : " username
+read -s -p "Enter password : " password
+if [ -f "/etc/systemd/system/idena_$username.service" ]
 then
 echo "The service is exists. Don't worry, I will kill it."
-systemctl stop idena
-systemctl disable idena
-rm /etc/systemd/system/idena.service #killing the service
-rm /usr/lib/systemd/system/idena.service # and related symlinks
+systemctl stop idena_$username
+systemctl disable idena_$username
+ipfsport=($(jq -r '.IpfsConf.IpfsPort' /home/$username/idena-go/config.json))
+ufw delete allow ${ipfsport[0]}
+rm /etc/systemd/system/idena_$username.service #killing the service
+rm /usr/lib/systemd/system/idena_$username.service # and related symlinks
 systemctl daemon-reload
 systemctl reset-failed
 else
    echo "Making clean IDENA Node Installation"
 fi
+#Firewall pre-chek
+ufw disable
+if compgen -G "/etc/systemd/system/idena*.service" > /dev/null; then
+echo "Idena Service exists. I will keep UFW rules as it is."
+else
+    echo "Applying UFW deny incoming rules for the first idena node instance installation"
+    ufw default deny incoming
+fi
+#in case if the user has been deleted and screen session still exists
+chown $username /run/screen/S-$username
 #
 # creating a user name and password for idena service 
 #
 if [ $(id -u) -eq 0 ]; then
-	read -p "Enter username : " username
-	read -s -p "Enter password : " password
 	egrep "^$username" /etc/passwd >/dev/null
 	if [ $? -eq 0 ]; then
-		echo "$username exists!"
-		exit 1
+		echo "$username exists! Let's kill existed idena installation."
+        rm -r /home/$username/idena-go
+        pass=$(perl -e 'print crypt($ARGV[0], "password")' $password)
+        usermod --password $pass $username
 	else
 		pass=$(perl -e 'print crypt($ARGV[0], "password")' $password)
 		useradd -s /bin/bash -m -p $pass $username
@@ -53,7 +68,7 @@ apt-get upgrade -y
 apt-get install -y jq git ufw curl wget nano screen psmisc unzip
 #
 mkdir /home/$username/idena-go
-cd idena-go
+#cd /home/$username/idena-go  
 #downloading specific version or the latest one
 read -p "Enter the number of the idena-go version (eg. 0.18.2) keep it empty to download the latest one: " version
 if [ -z $version ]; then version=$(curl -s https://api.github.com/repos/idena-network/idena-go/releases/latest | grep -Po '"tag_name":.*?[^\\]",' | sed 's/"tag_name": "v//g' |  sed 's/",//g') ; echo Installing version $version; fi
@@ -62,10 +77,10 @@ echo "$version" > /home/$username/idena-go/version
 wget https://github.com/idena-network/idena-go/releases/download/v$version/idena-node-linux-$version
 #customize config.json
 while true; do
-    read -p "Would you like to edit default config.json file?" yn
+    read -p "If you are installing multiple instances of Idena Node, you have to change default ports in config.json file. Would you like to do so?" yn
     case $yn in
         [Yy]* ) nano config.json; break;; 
-        [Nn]* ) break;;
+        [Nn]* ) echo "Using default config.json file"; break;;
         * ) echo "Please answer yes or no.";;
     esac
 done
@@ -73,13 +88,31 @@ done
 cp {config.json,idena.service} /home/$username/idena-go
 mv idena-node-linux-$version /home/$username/idena-go/idena-node
 chown -R $username:$username /home/$username/idena-go
+#checking if ipfs port is opened
+ipfsport=($(jq -r '.IpfsConf.IpfsPort' /home/$username/idena-go/config.json))
+if ! nc -z localhost $ipfsport; then
+echo IPFS port is opened
+else
+echo IPFS port is already used. Please choose another one.; read -p "Press enter to edit config.json file"; nano config.json 
+fi
+#checking if rpc port is opened
+rpcport=($(jq -r '.RPC.HTTPPort' /home/$username/idena-go/config.json))
+if ! nc -z localhost $rpcport; then
+echo RPC port is opened
+else
+echo RPC port is already used. Please choose another one.; read -p "Press enter to edit config.json file"; nano config.json
+fi
+#iDNA blockchain bootstrp mirrors
+dnabc="https://sync.idena.site/idenachain.db.zip"
 #Continue as username
 sudo -i -u $username bash << EOF
 whoami
+#Some functions
+function validate_url(){ if [[ "wget -S --spider $1  2>&1 | grep 'HTTP/1.1 200 OK'" ]]; then return 0; else return 1; fi; }
 cd ~/idena-go
 mkdir datadir ; mkdir datadir/idenachain.db
 cd datadir/idenachain.db
-wget https://sync.idena.site/idenachain.db.zip
+if validate_url $dnabc; then echo "Downloading IDENA blockchain bootstrap" && wget $dnabc; else echo "IDENA blockchain mirror is not available"; fi;
 unzip idenachain.db.zip
 rm idenachain.db.zip
 cd ~/idena-go
@@ -101,9 +134,9 @@ done
 EOF
 
 apikey=$( sudo -i -u $username cat /home/$username/idena-go/datadir/api.key )
-echo Your IDENA-node API key is: $apikey
+echo -e ${LBLUE}Your IDENA-node API key is: ${YELLOW}$apikey
 prvkey=$( cat /home/$username/idena-go/datadir/keystore/nodekey )
-echo Your IDENA-node PRIVATE key is: $prvkey
+echo -e ${LBLUE}Your IDENA-node PRIVATE key is: ${YELLOW}$prvkey${NC}
 
 #If yes changing prv and api keys
 while true; do
@@ -128,19 +161,18 @@ done
 killall screen
 # creating idena daemon
 sed -i "s/\$username/${username}/g" /home/$username/idena-go/idena.service
-cp /home/$username/idena-go/idena.service /etc/systemd/system/
-systemctl start idena.service
-systemctl enable idena.service
+cp /home/$username/idena-go/idena.service /etc/systemd/system/idena_$username.service
+systemctl start idena_$username.service
+systemctl enable idena_$username.service
 #Checking for idena updates ones a day
-cp idena_insp.sh /home/$username/idena-go/
-chown $username:$username /home/$username/idena-go/idena_insp.sh
+cp idena_insp.sh /home/$username/idena-go/idena_insp_$username.sh
+chown $username:$username /home/$username/idena-go/idena_insp_$username.sh
 read -p "Please insert the frequency in cron schedule expressions format when the script will be checking for updates. Empty prompt will set the value to once a day at 1AM: " idupdate
 if [[ -z $idupdate ]]; then idupdate=$(echo "0 1 * * *") ; echo "Set as default $idupdate"; fi
-crontab -l | grep -q 'idena_insp'  && echo 'entry exists' || (crontab -l 2>/dev/null; echo "$idupdate /home/$username/idena-go/idena_insp.sh") | crontab -
+echo "$idupdate $username bash /home/$username/idena-go/idena_insp_$username.sh" > /etc/cron.d/idena_update_$username
+#crontab -l | grep -q "idena_insp_$username"  && echo 'entry exists' || (crontab -l 2>/dev/null; echo "$idupdate /home/$username/idena-go/idena_insp_$username.sh") | crontab -
 # ufw configuration
 SSHPORT=${SSH_CLIENT##* }
-ufw disable
-ufw default deny incoming
 ufw allow $SSHPORT
 ufw allow "OpenSSH"
 ipfsport=($(jq -r '.IpfsConf.IpfsPort' /home/$username/idena-go/config.json))
