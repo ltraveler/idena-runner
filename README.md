@@ -31,6 +31,7 @@ The script is creating a service daemon called idena. Which starts on the boot.
 * `service idena_$username restart` - to restart the service
 * `service idena_$username stop` - to stop the service
 * `service idena_$username start` - to start the service
+
 *where $username is required instance username
 
 
