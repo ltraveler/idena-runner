@@ -11,8 +11,8 @@
   "IpfsConf": {
     "Profile": "server",
     "IpfsPort": 40405,
-    "BlockPinThreshold": 1,
-    "FlipPinThreshold": 1
+    "BlockPinThreshold": 0.3,
+    "FlipPinThreshold": 0.5
   },
   "Sync": {
     "LoadAllFlips": true,
