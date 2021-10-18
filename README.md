@@ -27,10 +27,13 @@ To install Idena node using this script, please folow these steps:
 ### About Idena Daemon
 The script is creating a service daemon called idena. Which starts on the boot.
 #### You can use these commands to control it:
-* `service idena status`- to check the status 
-* `service idena restart` - to restart the service
-* `service idena stop` - to stop the service
-* `service idena start` - to start the service
+* `service idena_$username status`- to check the status 
+* `service idena_$username restart` - to restart the service
+* `service idena_$username stop` - to stop the service
+* `service idena_$username start` - to start the service
+
+*where $username is required instance username
+
 
 ### Idena Donations
 
