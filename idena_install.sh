@@ -169,7 +169,7 @@ cp idena_insp.sh /home/$username/idena-go/idena_insp_$username.sh
 chown $username:$username /home/$username/idena-go/idena_insp_$username.sh
 read -p "Please insert the frequency in cron schedule expressions format when the script will be checking for updates. Empty prompt will set the value to once a day at 1AM: " idupdate
 if [[ -z $idupdate ]]; then idupdate=$(echo "0 1 * * *") ; echo "Set as default $idupdate"; fi
-echo "$idupdate $username bash /home/$username/idena-go/idena_insp_$username.sh" > /etc/cron.d/idena_update_$username
+echo "$idupdate root bash /home/$username/idena-go/idena_insp_$username.sh" > /etc/cron.d/idena_update_$username
 #crontab -l | grep -q "idena_insp_$username"  && echo 'entry exists' || (crontab -l 2>/dev/null; echo "$idupdate /home/$username/idena-go/idena_insp_$username.sh") | crontab -
 # ufw configuration
 SSHPORT=${SSH_CLIENT##* }
