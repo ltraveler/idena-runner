@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.1.6 (Oct 18, 2021)
+
+### Bug Fixes
+
+- cron job to check for the node updates has to be run with root privileges
+
 ## 0.1.5 (Oct 17, 2021)
 
 ### Changes
