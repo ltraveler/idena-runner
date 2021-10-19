@@ -104,15 +104,21 @@ echo RPC port is already used. Please choose another one.; read -p "Press enter 
 fi
 #iDNA blockchain bootstrp mirrors
 dnabc="https://sync.idena.site/idenachain.db.zip"
+dnabc1="https://sync.idena-ar.com/idenachain.db.zip"
+function validate_url()
+{
+    wget --spider $1
+    return $?
+}
+mkdir /home/$username/idena-go/datadir ; mkdir /home/$username/idena-go/datadir/idenachain.db
+chown -R $username:$username /home/$username/idena-go/datadir
+if validate_url $dnabc; then echo -e "${YELLOW}Downloading IDENA blockchain bootstrap: Mirror 01${NC}" &&  wget --directory-prefix=/home/$username/idena-go/datadir/idenachain.db $dnabc;  elif validate_url $dnabc1; then echo -e "${YELLOW}Downloading IDENA blockchain bootstrap: Mirror 2${NC}" &&  wget --directory-prefix=/home/$username/idena-go/datadir/idenachain.db $dnabc1;  else echo "IDENA blockchain mirror is not available"; fi;
 #Continue as username
 sudo -i -u $username bash << EOF
 whoami
 #Some functions
 function validate_url(){ if [[ "wget -S --spider $1  2>&1 | grep 'HTTP/1.1 200 OK'" ]]; then return 0; else return 1; fi; }
-cd ~/idena-go
-mkdir datadir ; mkdir datadir/idenachain.db
-cd datadir/idenachain.db
-if validate_url $dnabc; then echo "Downloading IDENA blockchain bootstrap" && wget $dnabc; else echo "IDENA blockchain mirror is not available"; fi;
+cd ~/idena-go/datadir/idenachain.db
 unzip idenachain.db.zip
 rm idenachain.db.zip
 cd ~/idena-go
