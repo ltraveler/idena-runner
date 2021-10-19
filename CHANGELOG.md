@@ -4,7 +4,7 @@
 
 ### Changes
 
-- In case if the main mirror of Idena blockchain bootstrap is not available the script will try to download it from the mirrors 
+- In case if the primary source of Idena blockchain bootstrap is not available the script will try to download it from the mirrors 
 
 ## 0.1.6 (Oct 18, 2021)
 
