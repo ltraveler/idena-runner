@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.1.7 (Oct 18, 2021)
+
+### Changes
+
+- In case if the main mirror of Idena blockchain bootstrap is not available the script will try to download it from the mirrors 
+
 ## 0.1.6 (Oct 18, 2021)
 
 ### Bug Fixes
