@@ -105,6 +105,7 @@ fi
 #iDNA blockchain bootstrp mirrors
 dnabc="https://sync.idena.site/idenachain.db.zip"
 dnabc1="https://sync.idena-ar.com/idenachain.db.zip"
+dnabc2="https://github.com/ltraveler/idena-runner.git"
 function validate_url()
 {
     wget --spider $1
@@ -112,7 +113,9 @@ function validate_url()
 }
 mkdir /home/$username/idena-go/datadir ; mkdir /home/$username/idena-go/datadir/idenachain.db
 chown -R $username:$username /home/$username/idena-go/datadir
-if validate_url $dnabc; then echo -e "${YELLOW}Downloading IDENA blockchain bootstrap: Mirror 01${NC}" &&  wget --directory-prefix=/home/$username/idena-go/datadir/idenachain.db $dnabc;  elif validate_url $dnabc1; then echo -e "${YELLOW}Downloading IDENA blockchain bootstrap: Mirror 2${NC}" &&  wget --directory-prefix=/home/$username/idena-go/datadir/idenachain.db $dnabc1;  else echo "IDENA blockchain mirror is not available"; fi;
+if validate_url $dnabc2; then echo -e "${YELLOW}Downloading IDENA blockchain bootstrap: GitHub${NC}" && rm -rf /home/$username/idena-go/datadir/idenachain.db && git clone --depth=1 https://github.com/ltraveler/idenachain.db.git /home/$username/idena-go/datadir/idenachain.db && rm -rf /home/$username/idena-go/datadir/idenachain.db/.git; elif validate_url $dnabc; then echo -e "${YELLOW}Downloading IDENA blockchain bootstrap: Mirror 01${NC}" &&  wget --directory-prefix=/home/$username/idena-go/datadir/idenachain.db $dnabc;  elif validate_url $dnabc1; then echo -e "${YELLOW}Downloading IDENA blockchain bootstrap: Mirror 2${NC}" &&  wget --directory-prefix=/home/$username/idena-go/datadir/idenachain.db $dnabc1;  else echo "IDENA blockchain mirror is not available"; fi;
+#Changing idenachain rights
+chown -R $username:$username /home/$username/idena-go
 #Continue as username
 sudo -i -u $username bash << EOF
 whoami
