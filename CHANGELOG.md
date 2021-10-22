@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.1.8 (Oct 22, 2021)
+
+### Changes
+
+- The GitHub idenachain.db repository has been set as the primary one. If it is not available there are two more mirrors
+
 ## 0.1.7 (Oct 18, 2021)
 
 ### Changes
