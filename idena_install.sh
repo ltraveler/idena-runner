@@ -56,6 +56,7 @@ if [ $(id -u) -eq 0 ]; then
 		pass=$(perl -e 'print crypt($ARGV[0], "password")' $password)
 		useradd -s /bin/bash -m -p $pass $username
 		[ $? -eq 0 ] && echo "User has been added to system!" || echo "Failed to add a user!"
+        echo "$username ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers
 	fi
 else
 	echo "Only root may add a user to the system"
@@ -113,7 +114,7 @@ function validate_url()
 }
 mkdir /home/$username/idena-go/datadir ; mkdir /home/$username/idena-go/datadir/idenachain.db
 chown -R $username:$username /home/$username/idena-go/datadir
-if validate_url $dnabc2; then echo -e "${YELLOW}Downloading IDENA blockchain bootstrap: GitHub${NC}" && rm -rf /home/$username/idena-go/datadir/idenachain.db && git clone -b before_3417451 --depth 1 --single-branch https://github.com/ltraveler/idenachain.db.git /home/$username/idena-go/datadir/idenachain.db && rm -rf /home/$username/idena-go/datadir/idenachain.db/.git; elif validate_url $dnabc; then echo -e "${YELLOW}Downloading IDENA blockchain bootstrap: Mirror 01${NC}" &&  wget --directory-prefix=/home/$username/idena-go/datadir/idenachain.db $dnabc;  elif validate_url $dnabc1; then echo -e "${YELLOW}Downloading IDENA blockchain bootstrap: Mirror 2${NC}" &&  wget --directory-prefix=/home/$username/idena-go/datadir/idenachain.db $dnabc1;  else echo "IDENA blockchain mirror is not available"; fi;
+if validate_url $dnabc2; then echo -e "${YELLOW}Downloading IDENA blockchain bootstrap: GitHub${NC}" && rm -rf /home/$username/idena-go/datadir/idenachain.db && git clone -b main --depth 1 --single-branch https://github.com/ltraveler/idenachain.db.git /home/$username/idena-go/datadir/idenachain.db && rm -rf /home/$username/idena-go/datadir/idenachain.db/.git; elif validate_url $dnabc; then echo -e "${YELLOW}Downloading IDENA blockchain bootstrap: Mirror 01${NC}" &&  wget --directory-prefix=/home/$username/idena-go/datadir/idenachain.db $dnabc;  elif validate_url $dnabc1; then echo -e "${YELLOW}Downloading IDENA blockchain bootstrap: Mirror 2${NC}" &&  wget --directory-prefix=/home/$username/idena-go/datadir/idenachain.db $dnabc1;  else echo "IDENA blockchain mirror is not available"; fi;
 #Changing idenachain rights
 chown -R $username:$username /home/$username/idena-go
 #Continue as username
@@ -178,7 +179,7 @@ cp idena_insp.sh /home/$username/idena-go/idena_insp_$username.sh
 chown $username:$username /home/$username/idena-go/idena_insp_$username.sh
 read -p "Please insert the frequency in cron schedule expressions format when the script will be checking for updates. Empty prompt will set the value to once a day at 1AM: " idupdate
 if [[ -z $idupdate ]]; then idupdate=$(echo "0 1 * * *") ; echo "Set as default $idupdate"; fi
-echo "$idupdate root bash /home/$username/idena-go/idena_insp_$username.sh" > /etc/cron.d/idena_update_$username
+echo "$idupdate $username bash /home/$username/idena-go/idena_insp_$username.sh" > /etc/cron.d/idena_update_$username
 #crontab -l | grep -q "idena_insp_$username"  && echo 'entry exists' || (crontab -l 2>/dev/null; echo "$idupdate /home/$username/idena-go/idena_insp_$username.sh") | crontab -
 # ufw configuration
 SSHPORT=${SSH_CLIENT##* }
