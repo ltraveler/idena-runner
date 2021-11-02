@@ -56,8 +56,8 @@ if [ $(id -u) -eq 0 ]; then
 		pass=$(perl -e 'print crypt($ARGV[0], "password")' $password)
 		useradd -s /bin/bash -m -p $pass $username
 		[ $? -eq 0 ] && echo "User has been added to system!" || echo "Failed to add a user!"
-#should be added check point in case if there is already record in sudoers        
-        echo "$username ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers
+#add only if sudoers record doesn't exist 
+       grep -q "$username ALL=(ALL) NOPASSWD:ALL" /etc/sudoers || echo "$username ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers 
 	fi
 else
 	echo "Only root may add a user to the system"
