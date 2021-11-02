@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.1.9 (Nov 01, 2021)
+
+### Bug Fixes
+
+- Some important bug fixes about duplicate records that could appear in case of reinstalling idena node with the same username
+
 ## 0.1.8 (Oct 22, 2021)
 
 ### Changes
