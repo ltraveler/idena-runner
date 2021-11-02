@@ -50,6 +50,7 @@ if [ $(id -u) -eq 0 ]; then
 	if [ $? -eq 0 ]; then
 		echo "$username exists! Let's kill existed idena installation."
         rm -r /home/$username/idena-go
+        rm -f /etc/cron.d/idena_update_$username 
         pass=$(perl -e 'print crypt($ARGV[0], "password")' $password)
         usermod --password $pass $username
 	else
