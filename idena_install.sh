@@ -53,12 +53,13 @@ if [ $(id -u) -eq 0 ]; then
         rm -f /etc/cron.d/idena_update_$username 
         pass=$(perl -e 'print crypt($ARGV[0], "password")' $password)
         usermod --password $pass $username
+        grep -q "$username ALL=NOPASSWD: /usr/sbin/service idena_$username *" /etc/sudoers || echo "$username ALL=NOPASSWD: /usr/sbin/service idena_$username *" >> /etc/sudoers
 	else
 		pass=$(perl -e 'print crypt($ARGV[0], "password")' $password)
 		useradd -s /bin/bash -m -p $pass $username
 		[ $? -eq 0 ] && echo "User has been added to system!" || echo "Failed to add a user!"
 #add only if sudoers record doesn't exist 
-       grep -q "$username ALL=(ALL) NOPASSWD:ALL" /etc/sudoers || echo "$username ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers 
+        grep -q "$username ALL=NOPASSWD: /usr/sbin/service idena_$username *" /etc/sudoers || echo "$username ALL=NOPASSWD: /usr/sbin/service idena_$username *" >> /etc/sudoers 
 	fi
 else
 	echo "Only root may add a user to the system"
