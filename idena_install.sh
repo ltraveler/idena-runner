@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/bash 
 #
 #ASCII color assign
 RED="\033[0;31m"
@@ -94,18 +94,14 @@ mv idena-node-linux-$version /home/$username/idena-go/idena-node
 chown -R $username:$username /home/$username/idena-go
 #checking if ipfs port is opened
 ipfsport=($(jq -r '.IpfsConf.IpfsPort' /home/$username/idena-go/config.json))
-if ! nc -z localhost $ipfsport; then
-echo IPFS port is opened
-else
-echo IPFS port is already used. Please choose another one.; read -p "Press enter to edit config.json file"; nano config.json 
-fi
+until ! nc -zv localhost $ipfsport; do
+echo IPFS port is already used. Please choose another one.; read -p "Press enter to edit config.json file"; nano config.json; 
+done
 #checking if rpc port is opened
 rpcport=($(jq -r '.RPC.HTTPPort' /home/$username/idena-go/config.json))
-if ! nc -z localhost $rpcport; then
-echo RPC port is opened
-else
-echo RPC port is already used. Please choose another one.; read -p "Press enter to edit config.json file"; nano config.json
-fi
+until ! nc -zv localhost $rpcport; do
+echo RPC port is already used. Please choose another one.; read -p "Press enter to edit config.json file"; nano config.json;
+done
 #iDNA blockchain bootstrp mirrors
 dnabc="https://sync.idena.site/idenachain.db.zip"
 dnabc1="https://sync.idena-ar.com/idenachain.db.zip"
