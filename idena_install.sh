@@ -95,12 +95,14 @@ chown -R $username:$username /home/$username/idena-go
 #checking if ipfs port is opened
 ipfsport=($(jq -r '.IpfsConf.IpfsPort' /home/$username/idena-go/config.json))
 until ! nc -zv localhost $ipfsport; do
-echo IPFS port is already used. Please choose another one.; read -p "Press enter to edit config.json file"; nano config.json; 
+echo IPFS port is already used. Please choose another one.; read -p "Press enter to edit config.json file"; nano /home/$username/idena-go/config.json; 
+ipfsport=($(jq -r '.IpfsConf.IpfsPort' /home/$username/idena-go/config.json))
 done
 #checking if rpc port is opened
 rpcport=($(jq -r '.RPC.HTTPPort' /home/$username/idena-go/config.json))
 until ! nc -zv localhost $rpcport; do
-echo RPC port is already used. Please choose another one.; read -p "Press enter to edit config.json file"; nano config.json;
+echo RPC port is already used. Please choose another one.; read -p "Press enter to edit config.json file"; nano /home/$username/idena-go/config.json;
+rpcport=($(jq -r '.RPC.HTTPPort' /home/$username/idena-go/config.json))
 done
 #iDNA blockchain bootstrp mirrors
 dnabc="https://sync.idena.site/idenachain.db.zip"
@@ -171,7 +173,7 @@ systemctl enable idena_$username.service
 #Checking for idena updates ones a day
 cp idena_insp.sh /home/$username/idena-go/idena_insp_$username.sh
 chown $username:$username /home/$username/idena-go/idena_insp_$username.sh
-read -p "Please insert the frequency in cron schedule expressions format when the script will be checking for updates. Empty prompt will set the value to once a day at 1AM: " idupdate
+read -p $'\e[33m\e[1mPlease insert the frequency \e[32m\e[1m in cron schedule expressions format \e[0mwhen the script will be checking for updates. \n\e[31m\e[1mEmpty prompt will set the value to run it once a day at 1AM:\e[0m ' idupdate
 if [[ -z $idupdate ]]; then idupdate=$(echo "0 1 * * *") ; echo "Set as default $idupdate"; fi
 echo "$idupdate $username bash /home/$username/idena-go/idena_insp_$username.sh" > /etc/cron.d/idena_update_$username
 #crontab -l | grep -q "idena_insp_$username"  && echo 'entry exists' || (crontab -l 2>/dev/null; echo "$idupdate /home/$username/idena-go/idena_insp_$username.sh") | crontab -
