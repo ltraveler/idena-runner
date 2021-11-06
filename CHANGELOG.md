@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.2.0 (Nov 05, 2021)
+
+### Bug Fixes
+
+- The script is always checking that the ports from config.json are opened before to run a new Idena instance. If the port is closed the script is asking to change the port number to another one.
+
 ## 0.1.9 (Nov 01, 2021)
 
 ### Bug Fixes
