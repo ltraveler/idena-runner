@@ -11,6 +11,13 @@ To install Idena node using this script, please folow these steps:
 * `chmod +x idena_install.sh` to make the script executable
 * `./idena_install.sh` to run the script
 
+### Features
+
+* Multiple Idena instances installation: 1 user - 1 instance
+* Import the existing private/node keys during the installation process
+* Automatic updates crontask that can be schedulled during the installation process
+* Uncomplicated Firewall (UFW) configuration and automatic port rules updates during the idena-node instance installaltion 
+
 ### What the script is doing?
 
 1. Checking if the idena.service exists;
