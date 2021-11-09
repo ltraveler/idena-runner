@@ -1,6 +1,10 @@
-## Idena Runner
+<h1 align="center">
+  <img src="https://github.com/ltraveler/ltraveler/raw/main/images/idena-runner-logo.png" width="224px"/><br/>
+  Idena RUNNER Script
+</h1>
+<p align="center"><b>Bash Script implementation</b> of the <b>Idena network node</b> installation wizard. <br> Install multiple instances of the <b>Idena-Go</b> in a simple and user-friendly way.</p>
 
-Bash Script implementation of the Idena network node installation wizard.
+<p align="center"><a href="https://github.com/ltraveler/idena-runner/releases" target="_blank"><img src="https://img.shields.io/badge/version-v0.2.0-blue?style=for-the-badge&logo=none" alt="idena runner latest version" /></a>&nbsp;<a href="https://wiki.ubuntu.com/FocalFossa/ReleaseNotes" target="_blank"><img src="https://img.shields.io/badge/Ubuntu-20.04(LTS)+-00ADD8?style=for-the-badge&logo=none" alt="Ubuntu minimum version" /></a>&nbsp;<a href="https://github.com/ltraveler/idena-runner/releases/latest" target="_blank"><img src="https://img.shields.io/badge/Build-Stable-success?style=for-the-badge&logo=none" alt="idena-go latest release" /></a>&nbsp;<a href="https://www.gnu.org/licenses/quick-guide-gplv3.html" target="_blank"><img src="https://img.shields.io/badge/license-GPL3.0-red?style=for-the-badge&logo=none" alt="license" /></a></p>
 
 ## Running `idena_install.sh`
 
