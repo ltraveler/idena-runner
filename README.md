@@ -6,9 +6,9 @@
 
 <p align="center"><a href="https://github.com/ltraveler/idena-runner/releases/latest" target="_blank"><img src="https://img.shields.io/badge/version-v0.2.0-blue?style=for-the-badge&logo=none" alt="idena runner latest version" /></a>&nbsp;<a href="https://wiki.ubuntu.com/FocalFossa/ReleaseNotes" target="_blank"><img src="https://img.shields.io/badge/Ubuntu-20.04(LTS)+-00ADD8?style=for-the-badge&logo=none" alt="Ubuntu minimum version" /></a>&nbsp;<a href="https://github.com/ltraveler/idena-runner/blob/main/CHANGELOG.md" target="_blank"><img src="https://img.shields.io/badge/Build-Stable-success?style=for-the-badge&logo=none" alt="idena-go latest release" /></a>&nbsp;<a href="https://www.gnu.org/licenses/quick-guide-gplv3.html" target="_blank"><img src="https://img.shields.io/badge/license-GPL3.0-red?style=for-the-badge&logo=none" alt="license" /></a></p>
 
-## Running `idena_install.sh`
+## 🚀&nbsp; Running `idena_install.sh` (requires root privileges)
 
-Please make sure that you have a pure Ubuntu 18.04 installation.
+Please make sure that you have a pure Ubuntu 20.04 installation.
 To install Idena node using this script, please folow these steps:
 * `git clone https://github.com/ltraveler/idena-runner.git` clone the repository
 * `cd idena-runner`
