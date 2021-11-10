@@ -52,7 +52,8 @@ The script is creating a service daemon called idena. Which starts on the boot.
 3. `deluser --remove-home username` _removing related to idena-go instance user and all his files and folders_;
 4. `rm /etc/cron.d/idena_update_username` _removing cron idena-go update related task_;
 5. `rm /etc/systemd/system/idena_username.service` _removing idena daemon service related to the instance that we are uninstalling_;
-6. `systemctl daemon-reload` and `systemctl reset-failed` _updating systemctl changes that we have made in the previous step_.
+6. `systemctl daemon-reload` and `systemctl reset-failed` _updating systemctl changes that we have made in the previous step_;
+7. `ufw delete allow ipfs_port_number` you have to change portnumber to the port that you have used to install the instance. By default it is `40405`.
 
 ### 🤝&nbsp; Idena Donations
 
