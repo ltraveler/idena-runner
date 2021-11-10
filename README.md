@@ -45,7 +45,7 @@ The script is creating a service daemon called idena. Which starts on the boot.
 
 *where $username is required instance username
 
-## 🗑️&nbsp; Idena-go instance uninstallation process
+## 🗑️&nbsp; Idena-go instance uninstallation process (requires root privileges)
 
 1. `service idena_username stop` _stopping idena user instance_;
 2. `pkill -u username` _killing all processes related to the user_;
