@@ -47,12 +47,12 @@ The script is creating a service daemon called idena. Which starts on the boot.
 
 ## 🗑️&nbsp; Idena-go instance uninstallation process
 
-1. `service idena_username stop` **stopping idena user instance;
-2. `pkill -u username` **killing all processes related to the user;
-3. `deluser --remove-home username` **removing related to idena-go instance user and all his files and folders;
-4. `rm /etc/cron.d/idena_update_username` **removing cron idena-go update related task
-5. `rm /etc/systemd/system/idena_username.service` **removing idena daemon service related to the instance that we are uninstalling
-6. `systemctl daemon-reload` and `systemctl reset-failed` **updating systemctl changes that we have made in the previous step.   
+1. `service idena_username stop` _stopping idena user instance_;
+2. `pkill -u username` _killing all processes related to the user_;
+3. `deluser --remove-home username` _removing related to idena-go instance user and all his files and folders_;
+4. `rm /etc/cron.d/idena_update_username` _removing cron idena-go update related task_;
+5. `rm /etc/systemd/system/idena_username.service` _removing idena daemon service related to the instance that we are uninstalling_;
+6. `systemctl daemon-reload` and `systemctl reset-failed` _updating systemctl changes that we have made in the previous step_.
 
 ### Idena Donations
 
