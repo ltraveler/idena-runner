@@ -15,14 +15,14 @@ To install Idena node using this script, please folow these steps:
 * `chmod +x idena_install.sh` to make the script executable
 * `./idena_install.sh` to run the script
 
-### Features
+## ✅&nbsp; Features
 
 * Multiple Idena instances installation: 1 user - 1 instance
 * Import the existing private/node keys during the installation process
 * Automatic updates crontask that can be schedulled during the installation process
 * Uncomplicated Firewall (UFW) configuration and automatic port rules updates during the idena-node instance installaltion 
 
-### What the script is doing?
+## 🙋&nbsp; What the script is doing?
 
 1. Checking if the idena.service exists;
 2. Creating new user and password to run the Idena node daemon;
@@ -35,7 +35,7 @@ To install Idena node using this script, please folow these steps:
 9. Creating Idena Daemon and running it;
 10. Installing and running firewall based on SSH and IPFS port numbers.
 
-### About Idena Daemon
+##  ⚙️&nbsp;  About Idena Daemon
 The script is creating a service daemon called idena. Which starts on the boot.
 #### You can use these commands to control it:
 * `service idena_$username status`- to check the status 
@@ -54,14 +54,14 @@ The script is creating a service daemon called idena. Which starts on the boot.
 5. `rm /etc/systemd/system/idena_username.service` _removing idena daemon service related to the instance that we are uninstalling_;
 6. `systemctl daemon-reload` and `systemctl reset-failed` _updating systemctl changes that we have made in the previous step_.
 
-### Idena Donations
+### 🤝&nbsp; Idena Donations
 
 * `0xf041640788910fc89a211cd5bcbf518f4f14d831` - **All donations are welcomed and appreciated**;
 
-### Other information
+### ℹ️&nbsp; Other information
 * If you are looking for a stable shared node service, please contact me on **Telegram**  `@ltrvlr`
 
-### Contact information
+### 🗣️&nbsp; Contact information
 * **Email** `ltraveler@protonmail.com`
 * **Telegram** `@ltrvlr`
 
