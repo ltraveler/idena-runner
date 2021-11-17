@@ -7,7 +7,7 @@ echo $username
 echo $version
 lver=$( echo $latver | sed 's/[^0-9]*//g' )
 cver=$( echo $version | sed 's/[^0-9]*//g' )
-if [[ "$lver" -gt "$cver" ]]
+if [[ "$lver" > "$cver" ]]
 then
 echo "New version is available"
 sudo service idena_$username stop
