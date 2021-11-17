@@ -45,7 +45,7 @@ The script is creating a service daemon called idena. Which starts on the boot.
 
 *where $username is required instance username
 
-## 🗑️&nbsp; idena-runner instance update process (requires root privileges)
+## ✔️&nbsp; Idena-runner instance update process (requires root privileges)
 
 Run new version of the script and put the same username that you have used to install the instance that you are trying to update.
 That will overwrite all required files.
