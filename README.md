@@ -47,9 +47,11 @@ The script is creating a service daemon called idena. Which starts on the boot.
 
 ## ✔️&nbsp; Idena-runner instance update process (requires root privileges)
 
-Run new version of the script and put the same username that you have used to install the instance that you are trying to update.
+1. Backup the private key (`/home/idena_instance_username/idena-go/datadir/keystore/nodekey`)
+2. Backup the node api.key (`/home/idena_instance_username/idena-go/datadir/api.key`)
+3. Run the latest version of the idena-runner script and put the same username that you have used to install the instance that you are trying to update.
 That will overwrite all required files.
-***Be careful:*** **all files indide idena-go folder will be destroyed**.
+***Attention:*** **all files inside the idena-go folder will be permanently deleted**.
 
 ## 🗑️&nbsp; Idena-go instance uninstallation process (requires root privileges)
 
