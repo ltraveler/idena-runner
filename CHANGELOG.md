@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.2.1 (Nov 16, 2021)
+
+### Bug Fixes
+
+- ill-conditioned comparison related to the version number. Right now, the scheduled node instance update script working in the proper way.
+
 ## 0.2.0 (Nov 05, 2021)
 
 ### Bug Fixes

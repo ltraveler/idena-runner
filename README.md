@@ -4,7 +4,7 @@
 </h1>
 <p align="center"><b>Bash Script implementation</b> of the <b>Idena network node</b> installation wizard. <br> Install multiple instances of the <b>Idena-Go</b> in a simple and user-friendly way.</p>
 
-<p align="center"><a href="https://github.com/ltraveler/idena-runner/releases/latest" target="_blank"><img src="https://img.shields.io/badge/version-v0.2.0-blue?style=for-the-badge&logo=none" alt="idena runner latest version" /></a>&nbsp;<a href="https://wiki.ubuntu.com/FocalFossa/ReleaseNotes" target="_blank"><img src="https://img.shields.io/badge/Ubuntu-20.04(LTS)+-00ADD8?style=for-the-badge&logo=none" alt="Ubuntu minimum version" /></a>&nbsp;<a href="https://github.com/ltraveler/idena-runner/blob/main/CHANGELOG.md" target="_blank"><img src="https://img.shields.io/badge/Build-Stable-success?style=for-the-badge&logo=none" alt="idena-go latest release" /></a>&nbsp;<a href="https://www.gnu.org/licenses/quick-guide-gplv3.html" target="_blank"><img src="https://img.shields.io/badge/license-GPL3.0-red?style=for-the-badge&logo=none" alt="license" /></a></p>
+<p align="center"><a href="https://github.com/ltraveler/idena-runner/releases/latest" target="_blank"><img src="https://img.shields.io/badge/version-v0.2.1-blue?style=for-the-badge&logo=none" alt="idena runner latest version" /></a>&nbsp;<a href="https://wiki.ubuntu.com/FocalFossa/ReleaseNotes" target="_blank"><img src="https://img.shields.io/badge/Ubuntu-20.04(LTS)+-00ADD8?style=for-the-badge&logo=none" alt="Ubuntu minimum version" /></a>&nbsp;<a href="https://github.com/ltraveler/idena-runner/blob/main/CHANGELOG.md" target="_blank"><img src="https://img.shields.io/badge/Build-Stable-success?style=for-the-badge&logo=none" alt="idena-go latest release" /></a>&nbsp;<a href="https://www.gnu.org/licenses/quick-guide-gplv3.html" target="_blank"><img src="https://img.shields.io/badge/license-GPL3.0-red?style=for-the-badge&logo=none" alt="license" /></a></p>
 
 ## 🚀&nbsp; Running `idena_install.sh` (requires root privileges)
 
@@ -44,6 +44,14 @@ The script is creating a service daemon called idena. Which starts on the boot.
 * `service idena_$username start` - to start the service
 
 *where $username is required instance username
+
+## ✔️&nbsp; Idena-runner instance update process (requires root privileges)
+
+1. Backup the private key (`/home/idena_instance_username/idena-go/datadir/keystore/nodekey`)
+2. Backup the node api.key (`/home/idena_instance_username/idena-go/datadir/api.key`)
+3. Run the latest version of the idena-runner script and put the same username that you have used to install the instance that you are trying to update.
+That will overwrite all required files.
+***Attention:*** **all files inside the idena-go folder will be permanently deleted**.
 
 ## 🗑️&nbsp; Idena-go instance uninstallation process (requires root privileges)
 
