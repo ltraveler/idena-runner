@@ -16,7 +16,14 @@ LCYAN="\033[1;36m"
 NC="\033[0m" # No Color
 #Checking if the idena service exists.
 echo -e "${LYELLOW}Please enter a user name and password that you would like to use for this ${LGREEN}Idena Node Daemon Instance${NC}"
+# read -p "Enter username : " username
+
+while
+echo -e "Please do not use ${LGREEN}root${NC} as a username"
 read -p "Enter username : " username
+[[ $username = 'root' ]]
+do true; done
+
 read -s -p "Enter password : " password
 if [ -f "/etc/systemd/system/idena_$username.service" ]
 then
@@ -41,7 +48,7 @@ else
     ufw default deny incoming
 fi
 #in case if the user has been deleted and screen session still exists
-chown $username /run/screen/S-$username
+chown $username:$username /run/screen/S-$username
 #
 # creating a user name and password for idena service 
 #
@@ -118,7 +125,6 @@ chown -R $username:$username /home/$username/idena-go/datadir
 if validate_url $dnabc2; then echo -e "${YELLOW}Downloading IDENA blockchain bootstrap: GitHub${NC}" ; rm -rf /home/$username/idena-go/datadir/idenachain.db ; git clone -b main --depth 1 --single-branch $dnabc2 /home/$username/idena-go/datadir/idenachain.db && rm -rf /home/$username/idena-go/datadir/idenachain.db/.git; elif validate_url $dnabc; then echo -e "${YELLOW}Downloading IDENA blockchain bootstrap: Mirror 01${NC}" &&  rm -rf /home/$username/idena-go/datadir/idenachain.db && wget --directory-prefix=/home/$username/idena-go/datadir $dnabc && unzip /home/$username/idena-go/datadir/idenachain.db.zip -d /home/$username/idena-go/datadir && rm -f /home/$username/idena-go/datadir/idenachain.db.zip; elif validate_url $dnabc1; then echo -e "${YELLOW}Downloading IDENA blockchain bootstrap: Mirror 2${NC}" && rm -rf /home/$username/idena-go/datadir/idenachain.db &&  wget --directory-prefix=/home/$username/idena-go/datadir $dnabc1 && unzip /home/$username/idena-go/datadir/idenachain.db.zip -d /home/$username/idena-go/datadir && rm -f /home/$username/idena-go/datadir/idenachain.db.zip; else echo "IDENA blockchain mirror is not available"; fi;
 #Changing idenachain rights
 chown -R $username:$username /home/$username/idena-go
-chown -R $username:$username /run/screen/S-$username
 #Continue as username
 sudo -i -u $username bash << EOF
 whoami
