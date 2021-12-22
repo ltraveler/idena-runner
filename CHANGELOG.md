@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.2.2 (Dec 21, 2021)
+
+### Bug Fixes
+
+- root as a username fool-tolerance has been added.
+
 ## 0.2.1 (Nov 16, 2021)
 
 ### Bug Fixes
