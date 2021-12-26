@@ -1,5 +1,5 @@
 <h1 align="center">
-  <img src="https://github.com/ltraveler/ltraveler/raw/main/images/idena-runner-logo.png" width="224px"/><br/>
+  <img alt="IDENA Runner Bash Script - fast idena-go network node deployment with possibility of multiple instances installation: 1 user - 1 idena-go node instance" src="https://github.com/ltraveler/ltraveler/raw/main/images/idena-runner-logo.png" width="224px"/><br/>
   Idena RUNNER Script
 </h1>
 <p align="center"><b>Bash Script implementation</b> of the <b>Idena network node</b> installation wizard. <br> Install multiple instances of the <b>Idena-Go</b> in a simple and user-friendly way.</p>
