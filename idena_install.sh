@@ -24,7 +24,28 @@ read -p "Enter username : " username
 [[ $username = 'root' ]]
 do true; done
 
+set -x
 read -s -p "Enter password : " password
+
+#adding user to DenyUsers group
+a_users=$(grep 'DenyUsers' /etc/ssh/sshd_config) 
+if [ -z "$a_users" ]; then
+    echo "User is not in the DenyUsers group"
+    echo "User has been added to DenyUsers group"
+    echo "DenyUsers $username" >> /etc/ssh/sshd_config
+elif
+    echo "$a_users" | grep "$username"; then
+    echo "User already in DenyUsers list"
+    return
+else
+    a_users="$a_users $username"
+    sed -i.bak "/DenyUsers/c$a_users" /etc/ssh/sshd_config
+    echo "User has been added to DenyUsers group"
+fi
+service ssh restart
+set +x
+
+#checking if there is any idena daemon related to the inserted user
 if [ -f "/etc/systemd/system/idena_$username.service" ]
 then
 echo "The service is exists. Don't worry, I will kill it."
