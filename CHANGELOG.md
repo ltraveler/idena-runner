@@ -2,6 +2,12 @@
 
 ## 0.2.2 (Dec 21, 2021)
 
+### Security improvement
+
+- SSH connection restrictions for all idena-go instances users. Users that has been added to run Idena instance are restricted to establish SSH connection.
+
+## 0.2.2 (Dec 21, 2021)
+
 ### Bug Fixes
 
 - root as a username fool-tolerance has been added.
