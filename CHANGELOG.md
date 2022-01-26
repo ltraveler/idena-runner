@@ -1,6 +1,6 @@
 # Changelog
 
-## 0.2.2 (Jan 25, 2022)
+## 0.2.3 (Jan 25, 2022)
 
 ### Security improvement
 
