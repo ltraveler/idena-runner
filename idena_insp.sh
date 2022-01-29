@@ -17,6 +17,5 @@ chown $username:$username idena-node-linux-$latver
 mv idena-node-linux-$latver /home/$username/idena-go/idena-node
 sudo service idena_$username start
 echo $latver > /home/$username/idena-go/version
-echo "New version has been succefully installed"
 echo -e "${LRED}IDENA NODE HAS BEEN SUCCESSFULLY UPDATED"
 fi
