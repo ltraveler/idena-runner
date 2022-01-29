@@ -35,14 +35,21 @@ if [ -z "$a_users" ]; then
 elif
     echo "$a_users" | grep "$username"; then
     echo "User already in DenyUsers list"
-    return
 else
     a_users="$a_users $username"
     sed -i.bak "/DenyUsers/c$a_users" /etc/ssh/sshd_config
     echo "User has been added to DenyUsers group"
 fi
 service ssh restart
-
+#Are we installing a shared node?
+while true; do
+    read -p "Would you like to install the node as a shared node?" yn
+    case $yn in
+        [Yy]* ) sed -i '/^ExecStart/ s/$/ --profile=shared/' idena.service && echo "Installing as a shared node"; break;; 
+        [Nn]* ) sed -i 's/ --profile=shared//g' idena.service && echo "Installing as a regular node"; break;;
+        * ) echo "Please answer yes or no.";;
+    esac
+done    
 #checking if there is any idena daemon related to the inserted user
 if [ -f "/etc/systemd/system/idena_$username.service" ]
 then
