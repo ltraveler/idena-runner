@@ -1,6 +1,6 @@
 <h1 align="center">
   <img alt="IDENA Runner Bash Script - fast idena-go network node deployment with possibility of multiple instances installation: 1 user - 1 idena-go node instance" src="https://github.com/ltraveler/ltraveler/raw/main/images/idena-runner-logo.png" width="224px"/><br/>
-  🏃 IDENA RUNNER — Запуск, настройка и обновление ИДЕНА, <span style="font-size: 95%; color: gray;">с возможностью мультинод</span>
+  🏃 IDENA RUNNER — Запуск, настройка и обновление ИДЕНА, <span style="font-size: 95%; color: gray;">с возможностью установки шаред и мультинод</span>
 </h1>
 
 <p align="justify"><b>Установщик Идена</b> в виде bash скрипта. Позволяет устанавить множество нод <b>Idena-Go</b> на ваш сервер в виде простого и понятного мастера с дружественным интерфейсом.</p>
