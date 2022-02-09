@@ -1,5 +1,16 @@
 # Changelog
 
+## 0.2.5 (Feb 09, 2022)
+
+### Changes
+
+- During the shared node installation wizard user can modify some important args: `BlockPinThreshold`, `FlipPinThreshold`, `AllFlipsLoadingTime`
+- Now the script is overwriting 'config.json' file to the default one to prevent possible conflicts in case of multiple installations
+
+### Bug Fixes
+
+- In case of using the same cloned folder for multiple instances installation arg `--profile=shared` was recorded multiple times: as many as quantity of successful installations   
+
 ## 0.2.4 (Jan 28, 2022)
 
 ### Changes
