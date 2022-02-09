@@ -50,7 +50,6 @@ while true; do
         * ) echo "Please answer yes or no.";;
     esac
 done    
-set -x
 #Changing config.json in case if we are installing the shared node profile
 if [ "$shared_node" = true ] ; then
     echo -e "${LGREEN}Let's optimize our configuration.${NC}\n${LRED}If you don't know the meaning of the following args, please skip them by pressing ENTER.${NC}\n${LGREEN}That will set them to the default recommended values.${NC}"
@@ -65,7 +64,6 @@ if [ "$shared_node" = true ] ; then
     echo $af_time
     sed -i -e "/BlockPinThreshold/c\    \"BlockPinThreshold\": $bp_threshold," -e "/FlipPinThreshold/c\    \"FlipPinThreshold\": $fp_threshold" -e "/AllFlipsLoadingTime/c\    \"AllFlipsLoadingTime\": $af_time," config.json
 fi
-set +x 
 #checking if there is any idena daemon related to the inserted user
 if [ -f "/etc/systemd/system/idena_$username.service" ]
 then
