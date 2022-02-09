@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.2.4 (Jan 28, 2022)
+
+### Changes
+
+- optional key `--profile=shared` has been added to the Idena service daemon 
+
 ## 0.2.3 (Jan 25, 2022)
 
 ### Security improvement
