@@ -45,11 +45,27 @@ service ssh restart
 while true; do
     read -p "Would you like to install the node as a shared node?" yn
     case $yn in
-        [Yy]* ) sed -i '/^ExecStart/ s/$/ --profile=shared/' idena.service && echo "Installing as a shared node"; break;; 
+        [Yy]* ) shared_node=true && sed -i '/ExecStart/cExecStart=\/home\/$username\/idena-go\/idena-node --config=\/home\/$username\/idena-go\/config.json --profile=shared' idena.service && echo "Installing as a shared node"; break;; 
         [Nn]* ) sed -i 's/ --profile=shared//g' idena.service && echo "Installing as a regular node"; break;;
         * ) echo "Please answer yes or no.";;
     esac
 done    
+set -x
+#Changing config.json in case if we are installing the shared node profile
+if [ "$shared_node" = true ] ; then
+    echo "Let's optimize our configuration"
+    read -p "BlockPinThreshold: " bp_threshold
+    bp_threshold=${bp_threshold:-0.3}
+    read -p "FlipPinThreshold: " fp_threshold
+    fp_threshold=${fp_threshold:-1}
+    read -p "AllFlipsLoadingTime: " af_time
+    af_time=${af_time:-7200000000000}
+    echo $bp_threshold
+    echo $fp_threshold
+    echo $af_time
+    sed -i -e "/BlockPinThreshold/c\    \"BlockPinThreshold\": $bp_threshold," -e "/FlipPinThreshold/c\    \"FlipPinThreshold\": $fp_threshold" -e "/AllFlipsLoadingTime/c\    \"AllFlipsLoadingTime\": $af_time," config.json
+fi
+set +x 
 #checking if there is any idena daemon related to the inserted user
 if [ -f "/etc/systemd/system/idena_$username.service" ]
 then
