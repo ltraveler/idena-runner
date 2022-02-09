@@ -41,12 +41,14 @@ else
     echo "User has been added to DenyUsers group"
 fi
 service ssh restart
+#Overwriting config.json to the default one from the repository to prevent possible conflicts
+curl https://raw.githubusercontent.com/ltraveler/idena-runner/main/config.json > config.json
 #Are we installing a shared node?
 while true; do
     read -p "Would you like to install the node as a shared node?" yn
     case $yn in
         [Yy]* ) shared_node=true && sed -i '/ExecStart/cExecStart=\/home\/$username\/idena-go\/idena-node --config=\/home\/$username\/idena-go\/config.json --profile=shared' idena.service && echo "Installing as a shared node"; break;; 
-        [Nn]* ) curl https://raw.githubusercontent.com/ltraveler/idena-runner/main/config.json > config.json && sed -i 's/ --profile=shared//g' idena.service && echo "Installing as a regular node"; break;;
+        [Nn]* ) sed -i 's/ --profile=shared//g' idena.service && echo "Installing as a regular node"; break;;
         * ) echo "Please answer yes or no.";;
     esac
 done    
