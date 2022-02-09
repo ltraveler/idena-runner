@@ -5,7 +5,7 @@
 ### Changes
 
 - During the shared node installation wizard user can modify some important args: `BlockPinThreshold`, `FlipPinThreshold`, `AllFlipsLoadingTime`
-- Now the script is overwriting 'config.json' file to the default one to prevent possible conflicts in case of multiple installations
+- Now the script is overwriting `config.json` file to the default one to prevent possible conflicts in case of multiple installations
 
 ### Bug Fixes
 
