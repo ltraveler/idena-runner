@@ -46,14 +46,14 @@ while true; do
     read -p "Would you like to install the node as a shared node?" yn
     case $yn in
         [Yy]* ) shared_node=true && sed -i '/ExecStart/cExecStart=\/home\/$username\/idena-go\/idena-node --config=\/home\/$username\/idena-go\/config.json --profile=shared' idena.service && echo "Installing as a shared node"; break;; 
-        [Nn]* ) sed -i 's/ --profile=shared//g' idena.service && echo "Installing as a regular node"; break;;
+        [Nn]* ) curl https://raw.githubusercontent.com/ltraveler/idena-runner/main/config.json > config.json && sed -i 's/ --profile=shared//g' idena.service && echo "Installing as a regular node"; break;;
         * ) echo "Please answer yes or no.";;
     esac
 done    
 set -x
 #Changing config.json in case if we are installing the shared node profile
 if [ "$shared_node" = true ] ; then
-    echo "Let's optimize our configuration"
+    echo -e "${LGREEN}Let's optimize our configuration.${NC}\n${LRED}If you don't know the meaning of the following args, please skip them by pressing ENTER.${NC}\n${LGREEN}That will set them to the default recommended values.${NC}"
     read -p "BlockPinThreshold: " bp_threshold
     bp_threshold=${bp_threshold:-0.3}
     read -p "FlipPinThreshold: " fp_threshold
