@@ -20,7 +20,8 @@ To install Idena node using this script, please folow these steps:
 * Multiple Idena instances installation: 1 user - 1 instance
 * Import the existing private/node keys during the installation process
 * Automatic updates crontask that can be schedulled during the installation process
-* Uncomplicated Firewall (UFW) configuration and automatic port rules updates during the idena-node instance installaltion 
+* Uncomplicated Firewall (UFW) configuration and automatic port rules updates during the idena-node instance installaltion
+* Possibility to install idena-go as a shared node with default recommended values
 
 ## 🙋&nbsp; What the script is doing?
 
@@ -34,6 +35,14 @@ To install Idena node using this script, please folow these steps:
 8. Creating cron job to check for idena-go updates ones once a day. You can specify the frequency during the installation process;
 9. Creating Idena Daemon and running it;
 10. Installing and running firewall based on SSH and IPFS port numbers.
+
+### 🏛️&nbsp;  In case if you are installing a shared node:
+1. The script will add `--profile=shared` to the service file;
+2. You can set the most important args: `BlockPinThreshold`, `FlipPinThreshold`, `AllFlipsLoadingTime`
+   - **Default values:** 
+     - `BlockPinThreshold` = `0.3`
+     - `FlipPinThreshold` = `1`
+     - `AllFlipsLoadingTime` = `7200000000000`
 
 ##  ⚙️&nbsp;  About Idena Daemon
 The script is creating a service daemon called idena. Which starts on the boot.
