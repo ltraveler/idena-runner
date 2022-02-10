@@ -14,7 +14,7 @@ LPURPLE="\033[1;35m"
 CYAN="\033[0;36m"
 LCYAN="\033[1;36m"
 NC="\033[0m" # No Color
-#Checking if the idena service exists.
+#
 echo -e "${LYELLOW}Please enter a user name and password that you would like to use for this ${LGREEN}Idena Node Daemon Instance${NC}"
 # read -p "Enter username : " username
 
@@ -81,7 +81,7 @@ systemctl reset-failed
 else
    echo "Making clean IDENA Node Installation"
 fi
-#Firewall pre-chek
+#Firewall precheck
 ufw disable
 if compgen -G "/etc/systemd/system/idena*.service" > /dev/null; then
 echo "Idena Service exists. I will keep UFW rules as it is."
