@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.2.6 (Mar 06, 2022)
+
+### Changes
+
+- Some changes in user-interactive dialog to make it more user-friendly
+- Possibility to set all default values in `config.json` in case of the shared node installation
+
 ## 0.2.5 (Feb 09, 2022)
 
 ### Changes
@@ -9,7 +16,7 @@
 
 ### Bug Fixes
 
-- In case of using the same cloned folder for multiple instances installation arg `--profile=shared` was recorded multiple times: as many as quantity of successful installations   
+- In case of using the same cloned folder for multiple instances installation arg `--profile=shared` was recorded multiple times: as many as quantity of successful installations
 
 ## 0.2.4 (Jan 28, 2022)
 
