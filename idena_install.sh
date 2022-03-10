@@ -58,20 +58,20 @@ curl https://raw.githubusercontent.com/ltraveler/idena-runner/main/config.json >
 #Are we installing a shared node?
 #set -x
 while true; do
-    read -p "$(echo -e ${LYELLOW}Would you like to install the node as a shared node? ${LGREEN}[y/N]${NC} )" yn
+    read -p "$(echo -e ${LYELLOW}Would you like to install your idena node as a shared node? ${LGREEN}[y/N]${NC} )" yn
     case $yn in
-        [Yy]* ) shared_node=true && sed -i '/ExecStart/cExecStart=\/home\/$username\/idena-go\/idena-node --config=\/home\/$username\/idena-go\/config.json --profile=shared' idena.service && echo "Installing as a shared node"; break;; 
-        [Nn]* ) sed -i 's/ --profile=shared//g' idena.service && echo "Installing as a regular node"; break;;
+        [Yy]* ) shared_node=true && sed -i '/ExecStart/cExecStart=\/home\/$username\/idena-go\/idena-node --config=\/home\/$username\/idena-go\/config.json --profile=shared' idena.service && echo "Shared node installation"; break;; 
+        [Nn]* ) sed -i 's/ --profile=shared//g' idena.service && echo "Regular node installation"; break;;
         * ) echo "Please answer yes or no.";;
     esac
 done    
 #If hsared yes
 if [ "$shared_node" = true ]; then
 while true; do
-    read -p "$(echo -e ${LYELLOW}Would you like to set ${LRED}default recommended values${LYELLOW} in the configuration file of your shared node? ${LGREEN}[y/N]${NC} )" yn
+    read -p "$(echo -e ${LYELLOW}Would you like to set ${LRED}default recommended values${LYELLOW} in the shared node configuration file? ${LGREEN}[y/N]${NC} )" yn
     case $yn in
-        [Yy]* ) echo -e "${LGREEN}Let's optimize our configuration ${LYELLOW}by setting default values of\n${LRED}BlockPinThreshold: ${GREEN}-0.3${NC};\n${LRED}FlipPinThreshold: ${LGREEN}-1${NC};\n${LRED}AllFlipsLoadingTime: ${GREEN}-7200000000000${NC};" && bp_threshold=${bp_threshold:-0.3} && fp_threshold=${fp_threshold:-1} && af_time=${af_time:-7200000000000} && sed -i -e "/BlockPinThreshold/c\    \"BlockPinThreshold\": $bp_threshold," -e "/FlipPinThreshold/c\    \"FlipPinThreshold\": $fp_threshold" -e "/AllFlipsLoadingTime/c\    \"AllFlipsLoadingTime\": $af_time," config.json; break;;
-        [Nn]* ) echo -e "${LGREEN}Let's optimize our configuration.${NC}\n${LRED}If you don't know the meaning of the following args, please skip them by pressing ENTER.${NC}\n${LGREEN}That will set the value to the default recommended one. You can see it inside the square brackets.${NC}" && read -p "$(echo -e ${LRED}BlockPinThreshold ${NC}[${LGREEN}0.3${NC}]: )" bp_threshold && bp_threshold=${bp_threshold:-0.3} && read -p "$(echo -e ${LRED}FlipPinThreshold ${NC}[${LGREEN}1${NC}]: )" fp_threshold && fp_threshold=${fp_threshold:-1} && read -p "$(echo -e ${LRED}AllFlipsLoadingTime ${NC}[${LGREEN}7200000000000${NC}]: )" af_time && af_time=${af_time:-7200000000000} && echo $bp_threshold && echo $fp_threshold && echo $af_time && sed -i -e "/BlockPinThreshold/c\    \"BlockPinThreshold\": $bp_threshold," -e "/FlipPinThreshold/c\    \"FlipPinThreshold\": $fp_threshold" -e "/AllFlipsLoadingTime/c\    \"AllFlipsLoadingTime\": $af_time," config.json; break;;
+        [Yy]* ) echo -e "${LGREEN}Let's optimize shared node configuration file ${LYELLOW}by setting default values of\n${LRED}BlockPinThreshold: ${GREEN}-0.3${NC};\n${LRED}FlipPinThreshold: ${LGREEN}-1${NC};\n${LRED}AllFlipsLoadingTime: ${GREEN}-7200000000000${NC};" && bp_threshold=${bp_threshold:-0.3} && fp_threshold=${fp_threshold:-1} && af_time=${af_time:-7200000000000} && sed -i -e "/BlockPinThreshold/c\    \"BlockPinThreshold\": $bp_threshold," -e "/FlipPinThreshold/c\    \"FlipPinThreshold\": $fp_threshold" -e "/AllFlipsLoadingTime/c\    \"AllFlipsLoadingTime\": $af_time," config.json; break;;
+        [Nn]* ) echo -e "${LGREEN}Let's optimize our shared node configuration file.${NC}\n${LRED}If you don't know the meaning of the following args, please skip them by pressing ENTER.${NC}\n${LGREEN}That will set the value to the default recommended one. You can see it inside the square brackets.${NC}" && read -p "$(echo -e ${LRED}BlockPinThreshold ${NC}[${LGREEN}0.3${NC}]: )" bp_threshold && bp_threshold=${bp_threshold:-0.3} && read -p "$(echo -e ${LRED}FlipPinThreshold ${NC}[${LGREEN}1${NC}]: )" fp_threshold && fp_threshold=${fp_threshold:-1} && read -p "$(echo -e ${LRED}AllFlipsLoadingTime ${NC}[${LGREEN}7200000000000${NC}]: )" af_time && af_time=${af_time:-7200000000000} && echo $bp_threshold && echo $fp_threshold && echo $af_time && sed -i -e "/BlockPinThreshold/c\    \"BlockPinThreshold\": $bp_threshold," -e "/FlipPinThreshold/c\    \"FlipPinThreshold\": $fp_threshold" -e "/AllFlipsLoadingTime/c\    \"AllFlipsLoadingTime\": $af_time," config.json; break;;
         * ) echo -e "${GREEN}Please answer yes or no.${NC}";;
     esac
 done
@@ -106,7 +106,7 @@ chown $username:$username /run/screen/S-$username
 # creating a user name and password for idena service 
 #
 if [ $(id -u) -eq 0 ]; then
-	egrep "^$username" /etc/passwd >/dev/null
+	egrep -w "$username" /etc/passwd >/dev/null
 	if [ $? -eq 0 ]; then
 		echo "$username exists! Let's kill existed idena installation."
         rm -r /home/$username/idena-go
