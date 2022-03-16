@@ -45,7 +45,7 @@ if [ -z "$a_users" ]; then
     echo "User has been added to DenyUsers group"
     echo "DenyUsers $username" >> /etc/ssh/sshd_config
 elif
-    echo "$a_users" | grep "$username"; then
+    echo "$a_users" | grep -w "$username"; then
     echo "User already in DenyUsers list"
 else
     a_users="$a_users $username"
@@ -130,14 +130,14 @@ fi
 mkdir /home/$username/idena-go
 #cd /home/$username/idena-go  
 #downloading specific version or the latest one
-read -p "Enter the number of the idena-go version (eg. 0.18.2) keep it empty to download the latest one: " version
+read -p "$(echo -e ${LYELLOW}Enter the number of the idena-go version \(eg. ${LRED}0.18.2\)${LYELLOW} ${LGREEN}keep it empty ${LYELLOW}to download the latest one:${NC} )" version   
 if [ -z $version ]; then version=$(curl -s https://api.github.com/repos/idena-network/idena-go/releases/latest | grep -Po '"tag_name":.*?[^\\]",' | sed 's/"tag_name": "v//g' |  sed 's/",//g') ; echo Installing version $version; fi
 touch /home/$username/idena-go/version
 echo "$version" > /home/$username/idena-go/version
 wget https://github.com/idena-network/idena-go/releases/download/v$version/idena-node-linux-$version
 #customize config.json
 while true; do
-    read -p "If you are installing multiple instances of Idena Node, you have to change default ports in config.json file. Would you like to do so?" yn
+    read -p "$(echo -e ${LYELLOW}If you are installing multiple instances of Idena Node, ${LRED}you have to change default ports in ${LGREEN}config.json ${LRED}file. ${LYELLOW}Would you like to do so? ${LGREEN}[y/N]${NC})" yn
     case $yn in
         [Yy]* ) nano config.json; break;; 
         [Nn]* ) echo "Using default config.json file"; break;;
@@ -202,18 +202,18 @@ echo -e ${LBLUE}Your IDENA-node PRIVATE key is: ${YELLOW}$prvkey${NC}
 
 #If yes changing prv and api keys
 while true; do
-    read -p "Would you like to add your own IDENA private key?" yn
+    read -p "$(echo -e ${LYELLOW}Would you like to add your own IDENA private key? ${LGREEN}[y/N]${NC} )" yn
     case $yn in
-        [Yy]* ) killall screen; read -p "Please enter your IDENA private key: "; echo "$REPLY" > /home/$username/idena-go/datadir/keystore/nodekey; break;;
+        [Yy]* ) killall screen; read -p "$(echo -e ${LYELLOW}Please enter your IDENA private key:${NC} )"; echo "$REPLY" > /home/$username/idena-go/datadir/keystore/nodekey; break;;
         [Nn]* ) break;;
         * ) echo "Please answer yes or no.";;
     esac
 done
 
 while true; do
-    read -p "Would you like to add your own IDENA node key?" yn
+    read -p "$(echo -e ${LYELLOW}Would you like to add your own IDENA node key? ${LGREEN}[y/N]${NC} )" yn
     case $yn in
-        [Yy]* ) killall screen > /dev/null 2>&1; read -p "Please enter your IDENA node key: "; echo "$REPLY" > /home/$username/idena-go/datadir/api.key; break;;
+        [Yy]* ) killall screen > /dev/null 2>&1; read -p "$(echo -e ${LYELLOW}Please enter your IDENA node key: ${NC})"; echo "$REPLY" > /home/$username/idena-go/datadir/api.key; break;;
         [Nn]* ) break;;
         * ) echo "Please answer yes or no.";;
     esac
@@ -229,7 +229,7 @@ systemctl enable idena_$username.service
 #Checking for idena updates ones a day
 cp idena_insp.sh /home/$username/idena-go/idena_insp_$username.sh
 chown $username:$username /home/$username/idena-go/idena_insp_$username.sh
-read -p $'\e[33m\e[1mPlease insert the frequency \e[32m\e[1m in cron schedule expressions format \e[0mwhen the script will be checking for updates. \n\e[31m\e[1mEmpty prompt will set the value to run it once a day at 1AM:\e[0m ' idupdate
+read -p $'\e[33mPlease insert \e[32mthe frequency \e[91m in cron schedule expressions format \e[33mwhen the script will be checking for updates. \n\e[31m\e[1mEmpty prompt \e[33mwill set the value to run it \e[32monce a day at 1AM:\e[0m ' idupdate
 if [[ -z $idupdate ]]; then idupdate=$(echo "0 1 * * *") ; echo "Set as default $idupdate"; fi
 echo "$idupdate $username bash /home/$username/idena-go/idena_insp_$username.sh" > /etc/cron.d/idena_update_$username
 #crontab -l | grep -q "idena_insp_$username"  && echo 'entry exists' || (crontab -l 2>/dev/null; echo "$idupdate /home/$username/idena-go/idena_insp_$username.sh") | crontab -
