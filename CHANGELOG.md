@@ -1,5 +1,15 @@
 # Changelog
 
+## 0.2.7 (Mar 15, 2022)
+
+### Changes
+
+- Some color style changes for better user experience
+
+### Bug Fixes
+
+- Small bug fixes related to SSH deny permissions for re-created usernames
+
 ## 0.2.6 (Mar 06, 2022)
 
 ### Changes
