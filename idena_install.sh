@@ -202,7 +202,7 @@ echo -e ${LBLUE}Your IDENA-node PRIVATE key is: ${YELLOW}$prvkey${NC}
 
 #If yes changing prv and api keys
 while true; do
-    read -p "$(echo -e ${LYELLOW}Would you like to add your own IDENA private key? ${LGREEN}[y/N]${NC} )" yn
+    read -p "$(echo -e ${LYELLOW}Would you like to add your own ${LGREEN}IDENA NODE PRIVATE KEY${LYELLOW} \(aka ${LRED}nodekey${LYELLOW}\)?$'\n'${LGREEN}Default path: ${LRED}../idena-go/datadir/keystore/nodekey ${LGREEN}[y/N]${NC} )" yn
     case $yn in
         [Yy]* ) killall screen; read -p "$(echo -e ${LYELLOW}Please enter your IDENA private key:${NC} )"; echo "$REPLY" > /home/$username/idena-go/datadir/keystore/nodekey; break;;
         [Nn]* ) break;;
@@ -211,7 +211,7 @@ while true; do
 done
 
 while true; do
-    read -p "$(echo -e ${LYELLOW}Would you like to add your own IDENA node key? ${LGREEN}[y/N]${NC} )" yn
+    read -p "$(echo -e ${LYELLOW}Would you like to add your own ${LGREEN}IDENA NODE API KEY${LYELLOW} \(aka ${LRED}api.key${LYELLOW}\)?$'\n'${LGREEN}Default path: ${LRED}../idena-go/datadir/api.key  ${LGREEN}[y/N]${NC} )" yn
     case $yn in
         [Yy]* ) killall screen > /dev/null 2>&1; read -p "$(echo -e ${LYELLOW}Please enter your IDENA node key: ${NC})"; echo "$REPLY" > /home/$username/idena-go/datadir/api.key; break;;
         [Nn]* ) break;;
