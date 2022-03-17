@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.2.8 (Mar 17, 2022)
+
+### Changes
+
+- Some improvements in user experience model
+
 ## 0.2.7 (Mar 15, 2022)
 
 ### Changes
