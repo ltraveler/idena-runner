@@ -31,6 +31,8 @@
 
 Пожалуйста убедитесь, что у вас установлена **ОС Ubuntu 18.04** и выше.
 Для установки ноды идена-гоу, используя данный скрипт, вам нужно выполнить 4 простых шага:
+* `apt-get install -y git` installing git package
+**устанавливаем пакет git**
 * `git clone https://github.com/ltraveler/idena-runner.git`\
 **клонируем репозиторий**
 * `cd idena-runner`\
