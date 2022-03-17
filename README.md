@@ -10,6 +10,7 @@
 
 Please make sure that you have a pure Ubuntu 20.04 installation.
 To install Idena node using this script, please folow these steps:
+* `apt-get install -y git` installing git package
 * `git clone https://github.com/ltraveler/idena-runner.git` clone the repository
 * `cd idena-runner`
 * `chmod +x idena_install.sh` to make the script executable
