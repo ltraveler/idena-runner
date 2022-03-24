@@ -14,6 +14,17 @@ LPURPLE="\033[1;35m"
 CYAN="\033[0;36m"
 LCYAN="\033[1;36m"
 NC="\033[0m" # No Color
+#input flags set
+while getopts u:p: flag
+do
+    case "${flag}" in
+        u) username=${OPTARG};;
+        p) password=${OPTARG};;
+    esac
+done
+if [[ -n $username || -z $password ]]; then
+password=$username
+fi
 #updating Ubuntu and installing all required dependencies
 apt-get update
 apt-get upgrade -y
@@ -29,7 +40,7 @@ done
 #
 echo -e "${LYELLOW}Please enter a ${LRED}username${NC} and ${LRED}password${LYELLOW} that you would like to use for this ${LGREEN}Idena Node Daemon${LYELLOW} instance."
 # read -p "Enter username : " username
-
+if [ -z "$username" ]; then
 while
 echo -e "${NC}Please do not use ${LGREEN}root${NC} as a username"
 read -p "Enter username : " username
@@ -37,7 +48,7 @@ read -p "Enter username : " username
 do true; done
 
 read -s -p "Enter password : " password
-
+fi
 #adding user to DenyUsers group
 a_users=$(grep 'DenyUsers' /etc/ssh/sshd_config) 
 if [ -z "$a_users" ]; then
