@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.2.9 (Mar 24, 2022)
+
+### Changes
+
+- flags `-u` and `-p` have been added as possible arguments to run the script 
+
 ## 0.2.8 (Mar 17, 2022)
 
 ### Changes
