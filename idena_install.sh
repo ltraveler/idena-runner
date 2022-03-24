@@ -250,7 +250,7 @@ ufw allow $SSHPORT
 ufw allow "OpenSSH"
 ipfsport=($(jq -r '.IpfsConf.IpfsPort' /home/$username/idena-go/config.json))
 ufw allow ${ipfsport[0]}
-sudo ufw enable
+sudo yes | ufw enable 
 sudo ufw status
 # Installation has been successfully completed
 echo -e "${LRED}IDENA NODE HAS BEEN SUCCESSFULLY INSTALLED" 
