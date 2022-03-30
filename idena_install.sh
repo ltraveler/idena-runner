@@ -15,14 +15,90 @@ CYAN="\033[0;36m"
 LCYAN="\033[1;36m"
 NC="\033[0m" # No Color
 #input flags set
-while getopts u:p: flag
-do
-    case "${flag}" in
-        u) username=${OPTARG};;
-        p) password=${OPTARG};;
+set -o errexit -o pipefail -o noclobber -o nounset
+
+! getopt --test > /dev/null 
+if [[ ${PIPESTATUS[0]} -ne 4 ]]; then
+    echo 'I’m sorry, `getopt --test` failed in this environment.'
+    exit 1
+fi
+
+OPTIONS=u:p:v:sb:f:l:r:i:k:a:d: # man getopt explains what this : means
+LONGOPTS=username,password,version:,shared,blockpinthreshold,flippinthreshold,allflipsloadingtime,rpcport,ipfsport,privatekey,apikey,updatefreq
+
+! PARSED=$(getopt --options=$OPTIONS --longoptions=$LONGOPTS --name "$0" -- "$@")
+if [[ ${PIPESTATUS[0]} -ne 0 ]]; then
+    exit 2
+fi
+# 
+eval set -- "$PARSED"
+username='n' password='n' version='n' shared_node='n' bp_threshold='-0.3' fp_threshold='-1' af_time='-7200000000000' nrpcport='n' nipfsport='n' privatekey='n' nodeapikey='n' idupdate='n' 
+if [ "$shared_node" = "true" ]; then
+echo 'incorrect argument for ${LYELLOW}-s${NC} | ${LYELLOW}--shared ${NC}flag'
+fi
+# 
+while true; do
+    case "$1" in
+        -u|--user)
+            username="$2"
+            shift 2
+            ;;
+        -p|--password)
+            password="$2"
+            shift 2
+            ;;
+        -s|--shared)
+            shared_node=yes
+            shift
+            ;;
+        -v|--version)
+            version="$2"
+            shift 2
+            ;;
+        -b|--blockpinthreshold)
+            bp_threshold="$2"
+            shift 2
+            ;;
+        -f|--flippinthreshold)
+            fp_threshold="$2"
+            shift 2
+            ;;
+        -l|--allflipsloadingtime)
+            af_time="$2"
+            shift 2
+            ;;
+        -r|--rpcport)
+            nrpcport="$2"
+            shift 2
+            ;;
+        -i|--ipfsport)
+            nipfsport="$2"
+            shift 2
+            ;;
+        -k|--privatekey)
+            privatekey="$2"
+            shift 2
+            ;;
+        -a|--apikey)
+            nodeapikey="$2"
+            shift 2
+            ;;
+        -d|--updatefreq)
+            idupdate="$2"
+            shift 2
+            ;;
+        --)
+            shift
+            break
+            ;;
+        *)
+            echo "Programming error"
+            exit 3
+            ;;
     esac
 done
-if [[ -n $username || -z $password ]]; then
+#password the same as username if password not specified 
+if [ "$username" != 'n' && -z "$password" ]; then
 password=$username
 fi
 #updating Ubuntu and installing all required dependencies
@@ -40,7 +116,7 @@ done
 #
 echo -e "${LYELLOW}Please enter a ${LRED}username${NC} and ${LRED}password${LYELLOW} that you would like to use for this ${LGREEN}Idena Node Daemon${LYELLOW} instance."
 # read -p "Enter username : " username
-if [ -z "$username" ]; then
+if [ "$username" = 'n' ]; then
 while
 echo -e "${NC}Please do not use ${LGREEN}root${NC} as a username"
 read -p "Enter username : " username
@@ -65,19 +141,23 @@ else
 fi
 service ssh restart
 #Overwriting config.json to the default one from the repository to prevent possible conflicts
-curl https://raw.githubusercontent.com/ltraveler/idena-runner/main/config.json > config.json
+curl https://raw.githubusercontent.com/ltraveler/idena-runner/main/config.json >| config.json
 #Are we installing a shared node?
-#set -x
+if [ "$shared_node" = 'n' ]; then
 while true; do
     read -p "$(echo -e ${LYELLOW}Would you like to install your idena node as a shared node? ${LGREEN}[y/N]${NC} )" yn
     case $yn in
-        [Yy]* ) shared_node=true && sed -i '/ExecStart/cExecStart=\/home\/$username\/idena-go\/idena-node --config=\/home\/$username\/idena-go\/config.json --profile=shared' idena.service && echo "Shared node installation"; break;; 
+        [Yy]* ) shared_node="true" && sed -i '/ExecStart/cExecStart=\/home\/$username\/idena-go\/idena-node --config=\/home\/$username\/idena-go\/config.json --profile=shared' idena.service && echo "Shared node installation"; break;; 
         [Nn]* ) sed -i 's/ --profile=shared//g' idena.service && echo "Regular node installation"; break;;
         * ) echo "Please answer yes or no.";;
     esac
-done    
-#If hsared yes
-if [ "$shared_node" = true ]; then
+done
+else
+    sed -i '/ExecStart/cExecStart=\/home\/$username\/idena-go\/idena-node --config=\/home\/$username\/idena-go\/config.json --profile=shared' idena.service && echo "Shared node installation" 
+    sed -i -e "/BlockPinThreshold/c\    \"BlockPinThreshold\": $bp_threshold," -e "/FlipPinThreshold/c\    \"FlipPinThreshold\": $fp_threshold" -e "/AllFlipsLoadingTime/c\    \"AllFlipsLoadingTime\": $af_time," config.json; 
+fi
+#If shared true 
+if [ "$shared_node" = "true" ]; then
 while true; do
     read -p "$(echo -e ${LYELLOW}Would you like to set ${LRED}default recommended values${LYELLOW} in the shared node configuration file? ${LGREEN}[y/N]${NC} )" yn
     case $yn in
@@ -87,7 +167,6 @@ while true; do
     esac
 done
 fi
-#set +x
 #checking if there is any idena daemon related to the inserted user
 if [ -f "/etc/systemd/system/idena_$username.service" ]
 then
@@ -96,8 +175,8 @@ systemctl stop idena_$username
 systemctl disable idena_$username
 ipfsport=($(jq -r '.IpfsConf.IpfsPort' /home/$username/idena-go/config.json))
 ufw delete allow ${ipfsport[0]}
-rm /etc/systemd/system/idena_$username.service #killing the service
-rm /usr/lib/systemd/system/idena_$username.service # and related symlinks
+rm /etc/systemd/system/idena_$username.service ||: #killing the service
+rm /usr/lib/systemd/system/idena_$username.service ||: # and related symlinks
 systemctl daemon-reload
 systemctl reset-failed
 else
@@ -141,12 +220,23 @@ fi
 mkdir /home/$username/idena-go
 #cd /home/$username/idena-go  
 #downloading specific version or the latest one
-read -p "$(echo -e ${LYELLOW}Enter the number of the idena-go version \(eg. ${LRED}0.18.2\)${LYELLOW} ${LGREEN}keep it empty ${LYELLOW}to download the latest one:${NC} )" version   
+if [ "$version" = 'latest'  ]; then version=$(curl -s https://api.github.com/repos/idena-network/idena-go/releases/latest | grep -Po '"tag_name":.*?[^\\]",' | sed 's/"tag_name": "v//g' |  sed 's/",//g') ; echo Installing version $version; fi 
+if [ "$version" = 'n'  ]; then read -p "$(echo -e ${LYELLOW}Enter the number of the idena-go version \(eg. ${LRED}0.18.2\)${LYELLOW} ${LGREEN}keep it empty ${LYELLOW}to download the latest one:${NC} )" version; fi
 if [ -z $version ]; then version=$(curl -s https://api.github.com/repos/idena-network/idena-go/releases/latest | grep -Po '"tag_name":.*?[^\\]",' | sed 's/"tag_name": "v//g' |  sed 's/",//g') ; echo Installing version $version; fi
 touch /home/$username/idena-go/version
-echo "$version" > /home/$username/idena-go/version
+echo "$version" >| /home/$username/idena-go/version
 wget https://github.com/idena-network/idena-go/releases/download/v$version/idena-node-linux-$version
 #customize config.json
+
+if [[ "$nrpcport" = 'n' && "$nipfsport" != 'n' ]]; then
+    read -p "$(echo -e ${LRED}HTTP Port ${LYELLOW}aka ${LRED}RPC Port ${NC}[${LGREEN}9009${NC}]: )" nrpcport && nrpcport=${nrpcport: 9009}
+    sed -i -e "/HTTPPort/c\    \"HTTPPort\": $nrpcport" -e "/IpfsPort/c\    \"IpfsPort\": $nipfsport," config.json
+elif [[ "$nipfsport" = 'n' && "$nrpcport" != 'n' ]]; then
+    read -p "$(echo -e ${LRED}IPFS Port ${NC}[${LGREEN}40405${NC}]: )" nipfsport && nipfsport=${nipfsport: 40405}
+    sed -i -e "/IpfsPort/c\    \"IpfsPort\": $nipfsport," -e "/HTTPPort/c\    \"HTTPPort\": $nrpcport" config.json
+elif [[ "$nipfsport" != 'n' && "$nrpcport" != 'n' ]]; then
+    sed -i -e "/HTTPPort/c\    \"HTTPPort\": $nrpcport" -e "/IpfsPort/c\    \"IpfsPort\": $nipfsport," config.json
+else
 while true; do
     read -p "$(echo -e ${LYELLOW}If you are installing multiple instances of Idena Node, ${LRED}you have to change default ports in ${LGREEN}config.json ${LRED}file. ${LYELLOW}Would you like to do so? ${LGREEN}[y/N]${NC})" yn
     case $yn in
@@ -155,6 +245,8 @@ while true; do
         * ) echo "Please answer yes or no.";;
     esac
 done
+fi
+    
 #copying config.json and idena.service
 cp {config.json,idena.service} /home/$username/idena-go
 mv idena-node-linux-$version /home/$username/idena-go/idena-node
@@ -207,11 +299,19 @@ done
 EOF
 
 apikey=$( sudo -i -u $username cat /home/$username/idena-go/datadir/api.key )
+if [ "$nodeapikey" != 'n' ]; then
+apikey="$nodeapikey"
+fi
 echo -e ${LBLUE}Your IDENA-node API key is: ${YELLOW}$apikey
 prvkey=$( cat /home/$username/idena-go/datadir/keystore/nodekey )
+if [ "$privatekey" != 'n' ]; then
+prvkey="$privatekey"
+fi
 echo -e ${LBLUE}Your IDENA-node PRIVATE key is: ${YELLOW}$prvkey${NC}
 
 #If yes changing prv and api keys
+
+if [[ "$privatekey" = 'n' && "$nodeapikey" = 'n' ]]; then
 while true; do
     read -p "$(echo -e ${LYELLOW}Would you like to add your own ${LGREEN}IDENA NODE PRIVATE KEY${LYELLOW} \(aka ${LRED}nodekey${LYELLOW}\)?$'\n'${LGREEN}Default path: ${LRED}../idena-go/datadir/keystore/nodekey ${LGREEN}[y/N]${NC} )" yn
     case $yn in
@@ -229,7 +329,27 @@ while true; do
         * ) echo "Please answer yes or no.";;
     esac
 done
-
+fi
+if [[ "$privatekey" = 'n' && "$nodeapikey" != 'n' ]]; then
+while true; do
+    read -p "$(echo -e ${LYELLOW}Would you like to add your own ${LGREEN}IDENA NODE PRIVATE KEY${LYELLOW} \(aka ${LRED}nodekey${LYELLOW}\)?$'\n'${LGREEN}Default path: ${LRED}../idena-go/datadir/keystore/nodekey ${LGREEN}[y/N]${NC} )" yn
+    case $yn in
+        [Yy]* ) killall screen > /dev/null 2>&1; read -p "$(echo -e ${LYELLOW}Please enter your IDENA private key:${NC} )"; echo "$REPLY" >| /home/$username/idena-go/datadir/keystore/nodekey; echo "$nodeapikey" >| /home/$username/idena-go/datadir/api.key; break;;
+        [Nn]* ) break;;
+        * ) echo "Please answer yes or no.";;
+    esac
+done
+fi
+if [[ "$nodeapikey" = 'n' && "$privatekey" != 'n' ]]; then
+while true; do
+    read -p "$(echo -e ${LYELLOW}Would you like to add your own ${LGREEN}IDENA NODE API KEY${LYELLOW} \(aka ${LRED}api.key${LYELLOW}\)?$'\n'${LGREEN}Default path: ${LRED}../idena-go/datadir/api.key  ${LGREEN}[y/N]${NC} )" yn
+    case $yn in
+        [Yy]* ) killall screen > /dev/null 2>&1; read -p "$(echo -e ${LYELLOW}Please enter your IDENA node key: ${NC})"; echo "$REPLY" >| /home/$username/idena-go/datadir/api.key; echo "$privatekey" >| /home/$username/idena-go/datadir/keystore/nodekey; break;;
+        [Nn]* ) break;;
+        * ) echo "Please answer yes or no.";;
+    esac
+done
+fi
 # kill screen before to create the idena daemon
 killall screen
 # creating idena daemon
@@ -240,8 +360,10 @@ systemctl enable idena_$username.service
 #Checking for idena updates ones a day
 cp idena_insp.sh /home/$username/idena-go/idena_insp_$username.sh
 chown $username:$username /home/$username/idena-go/idena_insp_$username.sh
+if [ "$idupdate" = 'n' ]; then
 read -p $'\e[33mPlease insert \e[32mthe frequency \e[91m in cron schedule expressions format \e[33mwhen the script will be checking for updates. \n\e[31m\e[1mEmpty prompt \e[33mwill set the value to run it \e[32monce a day at 1AM:\e[0m ' idupdate
 if [[ -z $idupdate ]]; then idupdate=$(echo "0 1 * * *") ; echo "Set as default $idupdate"; fi
+fi    
 echo "$idupdate $username bash /home/$username/idena-go/idena_insp_$username.sh" > /etc/cron.d/idena_update_$username
 #crontab -l | grep -q "idena_insp_$username"  && echo 'entry exists' || (crontab -l 2>/dev/null; echo "$idupdate /home/$username/idena-go/idena_insp_$username.sh") | crontab -
 # ufw configuration
@@ -257,5 +379,5 @@ echo -e "${LRED}IDENA NODE HAS BEEN SUCCESSFULLY INSTALLED"
 echo -e "${LGREEN}FOR IDENA DONATIONS:${NC} 0xf041640788910fc89a211cd5bcbf518f4f14d831"
 echo -e "${YELLOW}CONTACT AUTHOR:${NC} ltraveler@protonmail.com"
 echo -e "${LBLUE}IDENA PERSONALIZED SHARED NODE SERVICE:${NC} https://t.me/ltrvlr"
+echo $apikey
 exit
-
