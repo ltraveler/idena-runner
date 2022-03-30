@@ -114,7 +114,7 @@ if [ $? != 0 ]; then
 fi
 done
 #
-echo -e "${LYELLOW}Please enter a ${LRED}username${NC} and ${LRED}password${LYELLOW} that you would like to use for this ${LGREEN}Idena Node Daemon${LYELLOW} instance."
+echo -e "${LYELLOW}Please enter a ${LRED}username${NC} and ${LRED}password${LYELLOW} that you would like to use for this ${LGREEN}Idena Node Daemon${LYELLOW} instance.${NC}"
 # read -p "Enter username : " username
 if [ "$username" = 'n' ]; then
 while
@@ -298,14 +298,16 @@ done
 
 EOF
 
-apikey=$( sudo -i -u $username cat /home/$username/idena-go/datadir/api.key )
+apikey=$( cat /home/$username/idena-go/datadir/api.key )
 if [ "$nodeapikey" != 'n' ]; then
 apikey="$nodeapikey"
+( sudo -i -u $username echo "$apikey" >| /home/$username/idena-go/datadir/api.key )
 fi
 echo -e ${LBLUE}Your IDENA-node API key is: ${YELLOW}$apikey
 prvkey=$( cat /home/$username/idena-go/datadir/keystore/nodekey )
 if [ "$privatekey" != 'n' ]; then
 prvkey="$privatekey"
+( sudo -i -u $username echo "$prvkey" >| /home/$username/idena-go/datadir/keystore/nodekey ) 
 fi
 echo -e ${LBLUE}Your IDENA-node PRIVATE key is: ${YELLOW}$prvkey${NC}
 
@@ -372,12 +374,11 @@ ufw allow $SSHPORT
 ufw allow "OpenSSH"
 ipfsport=($(jq -r '.IpfsConf.IpfsPort' /home/$username/idena-go/config.json))
 ufw allow ${ipfsport[0]}
-sudo yes | ufw enable 
-sudo ufw status
+echo "y" | sudo ufw enable
+#sudo ufw status
 # Installation has been successfully completed
 echo -e "${LRED}IDENA NODE HAS BEEN SUCCESSFULLY INSTALLED" 
 echo -e "${LGREEN}FOR IDENA DONATIONS:${NC} 0xf041640788910fc89a211cd5bcbf518f4f14d831"
 echo -e "${YELLOW}CONTACT AUTHOR:${NC} ltraveler@protonmail.com"
 echo -e "${LBLUE}IDENA PERSONALIZED SHARED NODE SERVICE:${NC} https://t.me/ltrvlr"
-echo $apikey
 exit
