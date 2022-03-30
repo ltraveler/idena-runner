@@ -93,9 +93,9 @@
             `-p` или `--password` - _password_ в случае использования `-u` без `-p` имя пользователя и пароль будут одинаковыми\
             `-s` или `--shared` - _установка клиента **idena-go** в качестве шаред ноды_\
             `-v` или `--version` - _версия клиента **idena-go**_ или аргумент _latest_ для скачивания последней доступной версии\
-            `-b` или `--blockpinthreshold` - _Block Pin Threshold_\
-            `-f` или `--flippinthreshold` - _Flip Pin Threshold_\
-            `-l` или `--allflipsloadingtime` - _All Flips Loading Time_\
+            `-b` или `--blockpinthreshold` - _Block Pin Threshold_ если не указано, при указании `-f` и/или `l` будет взято значение по умолчанию [`0.3`]\
+            `-f` или `--flippinthreshold` - _Flip Pin Threshold_ если не указано, при указании `-b` и/или `l` будет взято значение по умолчанию [`1`]\
+            `-l` или `--allflipsloadingtime` - _All Flips Loading Time_ если не указано, при указании `-b` и/или `f` будет взято значение по умолчанию [`7200000000000`]\
             `-r` или `--rpcport` - _RPC Port_ известный также как _HTTP Port_\
             `-i` или `--ipfsport` - _IPFS Port_\
             `-k` или `--privatekey` - _Приватный ключ Идены для импорта_ известный также как _nodekey_ `/datadir/keystore/nodekey`\
