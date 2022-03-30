@@ -17,7 +17,7 @@
             `-i` or `--ipfsport` - _IPFS Port_\
             `-k` or `--privatekey` - _IDENA Private Key_ aka _nodekey_\
             `-a` or `--apikey` - _IDENA Node API Key_\
-            `-d` or `--updatefreq` - _Update frequency in CRON expression format_\
+            `-d` or `--updatefreq` - _Update frequency in CRON expression format_
 
 **Apart from `-s` or `--shared` the rest of the flags need an argument inside '' (_apostrophe_)**
 
