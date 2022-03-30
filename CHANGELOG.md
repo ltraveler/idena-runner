@@ -10,9 +10,9 @@
             `-p` or `password` - _password_ in case of using `-u` without `-p` the password would be the same as username\
             `-s` or `--shared` - _shared node installation_\
             `-v` or `--version` - _idena-go node client version_ or _latest_ to download the latest one\
-            `-b` or `--blockpinthreshold` - _Block Pin Threshold_\
-            `-f` or `--flippinthreshold` - _Flip Pin Threshold_\
-            `-l` or `--allflipsloadingtime` - _All Flips Loading Time_\
+            `-b` or `--blockpinthreshold` - _Block Pin Threshold_ if not set the script will use the default recommended value [`0.3`]\
+            `-f` or `--flippinthreshold` - _Flip Pin Threshold_ if not set the script will use the default recommended value [`1`]\
+            `-l` or `--allflipsloadingtime` - _All Flips Loading Time_ if not set the script will use the default recommended value [`7200000000000`]\
             `-r` or `--rpcport` - _RPC Port_ aka _HTTP Port_\
             `-i` or `--ipfsport` - _IPFS Port_\
             `-k` or `--privatekey` - _IDENA Private Key_ aka _nodekey_\
