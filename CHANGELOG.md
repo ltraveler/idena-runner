@@ -18,8 +18,11 @@
             `-k` or `--privatekey` - _IDENA Private Key_ aka _nodekey_\
             `-a` or `--apikey` - _IDENA Node API Key_\
             `-d` or `--updatefreq` - _Update frequency in CRON expression format_\
-**Apart from `-s` or `--shared` the rest of the flags need an argument inside ''**\
-_**For example:** `./idena_install.sh -u ratel -p ratel -s -v 'latest' -b '-0.3' -f '-1' -l '-7200000000000' -r '9189' -i '41283' -k '6e17f7490f7922f3224d41769ce5ed2a01030de69d77163a291a77e8280aad3' -a '33e32cd86ecfb3179e50208428541a1e' -d '0 0 * * *'`\
+
+**Apart from `-s` or `--shared` the rest of the flags need an argument inside '' (_apostrophe_)**
+
+_**For example:**_\
+`./idena_install.sh -u ratel -p ratel -s -v 'latest' -b '-0.3' -f '-1' -l '-7200000000000' -r '9189' -i '41283' -k '6e17f7490f7922f3224d41769ce5ed2a01030de69d77163a291a77e8280aad3' -a '33e32cd86ecfb3179e50208428541a1e' -d '0 0 * * *'`
 
 ## 0.2.9 (Mar 24, 2022)
 
