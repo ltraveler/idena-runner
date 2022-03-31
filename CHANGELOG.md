@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.3.2 (Mar 31, 2022)
+
+### Bug Fixes
+
+- bug fix related to use --long-options and corresponding arguments
+
 ## 0.3.1 (Mar 30, 2022)
 
 ### Bug Fixes
