@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.3.3 (Mar 31, 2022)
+
+### Bug Fixes
+
+- `--username` long option didn't work properly
+
 ## 0.3.2 (Mar 31, 2022)
 
 ### Bug Fixes
