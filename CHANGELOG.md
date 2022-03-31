@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.3.1 (Mar 30, 2022)
+
+### Bug Fixes
+
+- some critical bugs have been fixed.\
+**Attention:** _**v0.3.0 must be upgraded to the latest one**_
+
 ## 0.3.0 (Mar 30, 2022)
 
 ### Changes
