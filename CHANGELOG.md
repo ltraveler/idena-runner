@@ -10,9 +10,9 @@
             `-p` or `password` - _password_ in case of using `-u` without `-p` the password would be the same as username\
             `-s` or `--shared` - _shared node installation_\
             `-v` or `--version` - _idena-go node client version_ or _latest_ to download the latest one\
-            `-b` or `--blockpinthreshold` - _Block Pin Threshold_\
-            `-f` or `--flippinthreshold` - _Flip Pin Threshold_\
-            `-l` or `--allflipsloadingtime` - _All Flips Loading Time_\
+            `-b` or `--blockpinthreshold` - _Block Pin Threshold_ if not set but `-f` and/or `-l` have been applied, the script will use the default recommended value [`0.3`]\
+            `-f` or `--flippinthreshold` - _Flip Pin Threshold_ if not set but `-b` and/or `-l` have been applied, the script will use the default recommended value [`1`]\
+            `-l` or `--allflipsloadingtime` - _All Flips Loading Time_ if not set but `-b` and/or `-f` have been applied, the script will use the default recommended value [`7200000000000`]\
             `-r` or `--rpcport` - _RPC Port_ aka _HTTP Port_\
             `-i` or `--ipfsport` - _IPFS Port_\
             `-k` or `--privatekey` - _IDENA Private Key_ aka _nodekey_\
@@ -22,7 +22,7 @@
 **Apart from `-s` or `--shared` the rest of the flags need an argument inside '' (_apostrophe_)**
 
 _**For example:**_\
-`./idena_install.sh -u ratel -p ratel -s -v 'latest' -b '-0.3' -f '-1' -l '-7200000000000' -r '9189' -i '41283' -k '6e17f7490f7922f3224d41769ce5ed2a01030de69d77163a291a77e8280aad3' -a '33e32cd86ecfb3179e50208428541a1e' -d '0 0 * * *'`
+`./idena_install.sh -u ratel -p ratel -s -v 'latest' -b '0.3' -f '1' -l '7200000000000' -r '9189' -i '41283' -k '6e17f7490f7922f3224d41769ce5ed2a01030de69d77163a291a77e8280aad3' -a '33e32cd86ecfb3179e50208428541a1e' -d '0 0 * * *'`
 
 ## 0.2.9 (Mar 24, 2022)
 
