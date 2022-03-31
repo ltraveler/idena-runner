@@ -23,8 +23,8 @@ if [[ ${PIPESTATUS[0]} -ne 4 ]]; then
     exit 1
 fi
 
-OPTIONS=u:p:v:sb:f:l:r:i:k:a:d: 
-LONGOPTS=username:,password:,version:,shared,blockpinthreshold:,flippinthreshold:,allflipsloadingtime:,rpcport:,ipfsport:,privatekey:,apikey:,updatefreq:
+OPTIONS=u:p:sv:b:f:l:r:i:k:a:d: 
+LONGOPTS=username:,password:,shared,version:,blockpinthreshold:,flippinthreshold:,allflipsloadingtime:,rpcport:,ipfsport:,privatekey:,apikey:,updatefreq:
 
 ! PARSED=$(getopt --options=$OPTIONS --longoptions=$LONGOPTS --name "$0" -- "$@")
 if [[ ${PIPESTATUS[0]} -ne 0 ]]; then
@@ -39,7 +39,7 @@ fi
 # 
 while true; do
     case "$1" in
-        -u|--user)
+        -u|--username)
             username="$2"
             shift 2
             ;;
