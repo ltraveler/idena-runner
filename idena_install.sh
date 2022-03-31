@@ -15,7 +15,7 @@ CYAN="\033[0;36m"
 LCYAN="\033[1;36m"
 NC="\033[0m" # No Color
 #input flags set
-set -o errexit -o pipefail -o noclobber -o nounset
+set -o pipefail -o nounset -o noclobber  #-o errexit 
 
 ! getopt --test > /dev/null 
 if [[ ${PIPESTATUS[0]} -ne 4 ]]; then
@@ -32,7 +32,7 @@ if [[ ${PIPESTATUS[0]} -ne 0 ]]; then
 fi
 # 
 eval set -- "$PARSED"
-username='n' password='n' version='n' shared_node='n' bp_threshold='-0.3' fp_threshold='-1' af_time='-7200000000000' nrpcport='n' nipfsport='n' privatekey='n' nodeapikey='n' idupdate='n' 
+username='n' password='n' version='n' shared_node='n' bp_threshold='0.3' fp_threshold='1' af_time='7200000000000' nrpcport='n' nipfsport='n' privatekey='n' nodeapikey='n' idupdate='n' 
 if [ "$shared_node" = "true" ]; then
 echo 'incorrect argument for ${LYELLOW}-s${NC} | ${LYELLOW}--shared ${NC}flag'
 fi
@@ -98,8 +98,8 @@ while true; do
     esac
 done
 #password the same as username if password not specified 
-if [ "$username" != 'n' && -z "$password" ]; then
-password=$username
+if [[ "$username" != 'n' && -z "$password" ]]; then
+password="$username"
 fi
 #updating Ubuntu and installing all required dependencies
 apt-get update
@@ -191,24 +191,25 @@ else
     ufw default deny incoming
 fi
 #in case if the user has been deleted and screen session still exists
-chown $username:$username /run/screen/S-$username
+if pgrep screen &> /dev/null ; then sudo killall screen ; fi
+#chown $username:$username /run/screen/S-$username
 #
 # creating a user name and password for idena service 
 #
-if [ $(id -u) -eq 0 ]; then
-	egrep -w "$username" /etc/passwd >/dev/null
+if [ "$(id -u)" -eq 0 ]; then
+	egrep -w "$username" /etc/passwd > /dev/null
 	if [ $? -eq 0 ]; then
 		echo "$username exists! Let's kill existed idena installation."
-        rm -r /home/$username/idena-go
-        rm -f /etc/cron.d/idena_update_$username 
-        pass=$(perl -e 'print crypt($ARGV[0], "password")' $password)
+        rm -r /home/$username/idena-go ||:
+        rm -f /etc/cron.d/idena_update_$username ||:
+        pass=$(openssl passwd -crypt $password)
         usermod --password $pass $username
         grep -q "$username ALL=NOPASSWD: /usr/sbin/service idena_$username *" /etc/sudoers || echo "$username ALL=NOPASSWD: /usr/sbin/service idena_$username *" >> /etc/sudoers
 	else
-		pass=$(perl -e 'print crypt($ARGV[0], "password")' $password)
+        pass=$(openssl passwd -crypt $password)
 		useradd -s /bin/bash -m -p $pass $username
 		[ $? -eq 0 ] && echo "User has been added to system!" || echo "Failed to add a user!"
-#add only if sudoers record doesn't exist 
+        #add only if sudoers record doesn't exist 
         grep -q "$username ALL=NOPASSWD: /usr/sbin/service idena_$username *" /etc/sudoers || echo "$username ALL=NOPASSWD: /usr/sbin/service idena_$username *" >> /etc/sudoers 
 	fi
 else
@@ -229,10 +230,10 @@ wget https://github.com/idena-network/idena-go/releases/download/v$version/idena
 #customize config.json
 
 if [[ "$nrpcport" = 'n' && "$nipfsport" != 'n' ]]; then
-    read -p "$(echo -e ${LRED}HTTP Port ${LYELLOW}aka ${LRED}RPC Port ${NC}[${LGREEN}9009${NC}]: )" nrpcport && nrpcport=${nrpcport: 9009}
+    read -p "$(echo -e ${LRED}HTTP Port ${LYELLOW}aka ${LRED}RPC Port ${NC}[${LGREEN}9009${NC}]: )" nrpcport && nrpcport=${nrpcport:-9009}
     sed -i -e "/HTTPPort/c\    \"HTTPPort\": $nrpcport" -e "/IpfsPort/c\    \"IpfsPort\": $nipfsport," config.json
 elif [[ "$nipfsport" = 'n' && "$nrpcport" != 'n' ]]; then
-    read -p "$(echo -e ${LRED}IPFS Port ${NC}[${LGREEN}40405${NC}]: )" nipfsport && nipfsport=${nipfsport: 40405}
+    read -p "$(echo -e ${LRED}IPFS Port ${NC}[${LGREEN}40405${NC}]: )" nipfsport && nipfsport=${nipfsport:-40405}
     sed -i -e "/IpfsPort/c\    \"IpfsPort\": $nipfsport," -e "/HTTPPort/c\    \"HTTPPort\": $nrpcport" config.json
 elif [[ "$nipfsport" != 'n' && "$nrpcport" != 'n' ]]; then
     sed -i -e "/HTTPPort/c\    \"HTTPPort\": $nrpcport" -e "/IpfsPort/c\    \"IpfsPort\": $nipfsport," config.json
