@@ -23,8 +23,8 @@ if [[ ${PIPESTATUS[0]} -ne 4 ]]; then
     exit 1
 fi
 
-OPTIONS=u:p:v:sb:f:l:r:i:k:a:d: # man getopt explains what this : means
-LONGOPTS=username,password,version:,shared,blockpinthreshold,flippinthreshold,allflipsloadingtime,rpcport,ipfsport,privatekey,apikey,updatefreq
+OPTIONS=u:p:v:sb:f:l:r:i:k:a:d: 
+LONGOPTS=username:,password:,version:,shared,blockpinthreshold:,flippinthreshold:,allflipsloadingtime:,rpcport:,ipfsport:,privatekey:,apikey:,updatefreq:
 
 ! PARSED=$(getopt --options=$OPTIONS --longoptions=$LONGOPTS --name "$0" -- "$@")
 if [[ ${PIPESTATUS[0]} -ne 0 ]]; then
