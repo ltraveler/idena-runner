@@ -192,7 +192,6 @@ else
 fi
 #in case if the user has been deleted and screen session still exists
 if pgrep screen &> /dev/null ; then sudo killall screen ; fi
-#chown $username:$username /run/screen/S-$username
 #
 # creating a user name and password for idena service 
 #
@@ -217,7 +216,7 @@ else
 	exit 2
 fi
 #
-
+chown $username:$username /run/screen/S-$username
 mkdir /home/$username/idena-go
 #cd /home/$username/idena-go  
 #downloading specific version or the latest one
@@ -358,6 +357,8 @@ killall screen
 # creating idena daemon
 sed -i "s/\$username/${username}/g" /home/$username/idena-go/idena.service
 cp /home/$username/idena-go/idena.service /etc/systemd/system/idena_$username.service
+systemctl daemon-reload
+systemctl reset-failed
 systemctl start idena_$username.service
 systemctl enable idena_$username.service
 #Checking for idena updates ones a day
@@ -374,7 +375,7 @@ SSHPORT=${SSH_CLIENT##* }
 ufw allow $SSHPORT
 ufw allow "OpenSSH"
 ipfsport=($(jq -r '.IpfsConf.IpfsPort' /home/$username/idena-go/config.json))
-ufw allow ${ipfsport[0]}
+ufw allow ${ipfsport[0]} comment "IDENA Instance for user $username"
 echo "y" | sudo ufw enable
 #sudo ufw status
 # Installation has been successfully completed
