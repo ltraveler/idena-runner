@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.3.4 (Mar 31, 2022)
+
+### Bug Fixes
+
+- ufw rules management updates + correction related to existed screen session precheck
+
 ## 0.3.3 (Mar 31, 2022)
 
 ### Bug Fixes
