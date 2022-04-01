@@ -97,7 +97,7 @@ That will overwrite all required files.
 5. `rm /etc/systemd/system/idena_username.service` _removing idena daemon service related to the instance that we are uninstalling_;
 6. `systemctl daemon-reload` and `systemctl reset-failed` _updating systemctl changes that we have made in the previous step_;
 7. `ufw delete allow ipfs_port_number` you have to change ipfs_port_number to the ipfs port that you have used to install the idena-go instance. By default it is `40405`;
-8. `sudo visudo` you have to find and delete the line related to the deleted user;
+8. `sudo visudo` you have to find and delete the line related to the deleted user at the end of the file;
 9. `nano /etc/ssh/sshd_config` - you have to delete the username from _DenyUsers_ group;
 10. `sudo sshd -t` - to be sure that your latest changes of _sshd_config_ file is correct;
 11. `sudo service sshd restart` - to restart _sshd daemon_.
