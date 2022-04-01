@@ -32,7 +32,7 @@
 
 - command line flags model has been completely reorganized.\
 **flags:**\
-            `-u` or `--user` - _username_\
+            `-u` or `--username` - _username_\
             `-p` or `--password` - _password_ in case of using `-u` without `-p` the password would be the same as username\
             `-s` or `--shared` - _shared node installation_\
             `-v` or `--version` - _idena-go node client version_ or _latest_ to download the latest one\
