@@ -134,8 +134,8 @@ _удаляем cron задачу, которая была создана для
 _удаляем демона idena привязанного к этому пользователю_
 6. `systemctl daemon-reload` and `systemctl reset-failed`\
 _обновление изменений в systemctl которые мы сделали на предыдущем шаге_
-7. `ufw delete allow ipfs_port_number`\
-_вам нужно изменить порт ipfs_port_number для ipfs который вы использовали для установки idena-go инстанции. По умолчанию это порт # `40405`_.
+7. `ufw show added | grep "IDENA Instance for user $username" | awk '{ gsub("ufw","ufw delete",$0); system($0)}'`\
+_не забудьте изменить `$username` на имя удалённого пользователя от которого запускалась инстанция идены_
 8. `sudo visudo`\
 _вам нужно найти и удалить строку относящуюся к удаляемому пользователю в конце редактируемого файла_
 9. `nano /etc/ssh/sshd_config`\
