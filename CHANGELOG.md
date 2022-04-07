@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.3.5 (Apr 07, 2022)
+
+### Bug Fixes
+
+- The password will be set the same as username in case if there is an empty answer on the password prompt in interactive mode 
+
 ## 0.3.4 (Mar 31, 2022)
 
 ### Bug Fixes
