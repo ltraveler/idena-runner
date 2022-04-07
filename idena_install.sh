@@ -124,6 +124,9 @@ read -p "Enter username : " username
 do true; done
 
 read -s -p "Enter password : " password
+if [ -z "$password" ]; then
+password="$username"
+fi
 fi
 #adding user to DenyUsers group
 a_users=$(grep 'DenyUsers' /etc/ssh/sshd_config) 
