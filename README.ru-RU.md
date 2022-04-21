@@ -132,7 +132,8 @@ _удаление относящихся к этому пользователю 
 _удаляем cron задачу, которая была создана для своевременного обновления ноды idena-go_
 5. `rm /etc/systemd/system/idena_username.service`\
 _удаляем демона idena привязанного к этому пользователю_
-6. `systemctl disable idena_username` _отключаем демона idena привязанного к этому пользователю_
+6. `systemctl disable idena_username`\
+_отключаем демона idena привязанного к этому пользователю_
 7. `systemctl daemon-reload` and `systemctl reset-failed`\
 _обновление изменений в systemctl которые мы сделали на предыдущем шаге_
 8. `ufw show added | grep "IDENA Instance for user $username" | awk '{ gsub("ufw","ufw delete",$0); system($0)}'`\
