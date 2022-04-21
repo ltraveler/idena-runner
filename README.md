@@ -95,12 +95,13 @@ That will overwrite all required files.
 3. `deluser --remove-home username` _removing related to idena-go instance user and all his files and folders_;
 4. `rm /etc/cron.d/idena_update_username` _removing cron idena-go update related task_;
 5. `rm /etc/systemd/system/idena_username.service` _removing idena daemon service related to the instance that we are uninstalling_;
-6. `systemctl daemon-reload` and `systemctl reset-failed` _updating systemctl changes that we have made in the previous step_;
-7. `ufw show added | grep "IDENA Instance for user $username" | awk '{ gsub("ufw","ufw delete",$0); system($0)}'` do not forget to replace `$username` to the real name of deleted user;
-8. `sudo visudo` you have to find and delete the line related to the deleted user at the end of the file;
-9. `nano /etc/ssh/sshd_config` - you have to delete the username from _DenyUsers_ group;
-10. `sudo sshd -t` - to be sure that your latest changes of _sshd_config_ file is correct;
-11. `sudo service sshd restart` - to restart _sshd daemon_.
+6. `systemctl disable idena_username` _disabling idena daemon service related to the instance that we are uninstalling_
+7. `systemctl daemon-reload` and `systemctl reset-failed` _updating systemctl changes that we have made in the previous step_;
+8. `ufw show added | grep "IDENA Instance for user $username" | awk '{ gsub("ufw","ufw delete",$0); system($0)}'` do not forget to replace `$username` to the real name of deleted user;
+9. `sudo visudo` you have to find and delete the line related to the deleted user at the end of the file;
+10. `nano /etc/ssh/sshd_config` - you have to delete the username from _DenyUsers_ group;
+11. `sudo sshd -t` - to be sure that your latest changes of _sshd_config_ file is correct;
+12. `sudo service sshd restart` - to restart _sshd daemon_.
 
 ### 🤝&nbsp; Idena Donations
 
