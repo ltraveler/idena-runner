@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.3.6 (June 28, 2022)
+
+### Bug Fixes
+
+- In the case of importing private and node keys manually, the import process kept the default generated files instead of writing new values
+
 ## 0.3.5 (Apr 07, 2022)
 
 ### Bug Fixes
