@@ -371,7 +371,7 @@ if [ "$idupdate" = 'n' ]; then
 read -p $'\e[33mPlease insert \e[32mthe frequency \e[91m in cron schedule expressions format \e[33mwhen the script will be checking for updates. \n\e[31m\e[1mEmpty prompt \e[33mwill set the value to run it \e[32monce a day at 1AM:\e[0m ' idupdate
 if [[ -z $idupdate ]]; then idupdate=$(echo "0 1 * * *") ; echo "Set as default $idupdate"; fi
 fi    
-echo "$idupdate $username bash /home/$username/idena-go/idena_insp_$username.sh" > /etc/cron.d/idena_update_$username
+echo "$idupdate $username /home/$username/idena-go/idena_insp_$username.sh" > /etc/cron.d/idena_update_$username
 #crontab -l | grep -q "idena_insp_$username"  && echo 'entry exists' || (crontab -l 2>/dev/null; echo "$idupdate /home/$username/idena-go/idena_insp_$username.sh") | crontab -
 # ufw configuration
 SSHPORT=${SSH_CLIENT##* }
