@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.3.7 (July 8, 2022)
+
+### Bug Fixes
+
+- Wrong call to Idena upgrade script
+
 ## 0.3.6 (June 28, 2022)
 
 ### Bug Fixes
