@@ -4,7 +4,7 @@
 
 ### Bug Fixes
 
-- Wrong call to Idena upgrade script
+- Wrong call to Idena node upgrade script
 
 ## 0.3.6 (June 28, 2022)
 
