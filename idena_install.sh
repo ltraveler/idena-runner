@@ -368,7 +368,7 @@ systemctl enable idena_$username.service
 cp idena_insp.sh /home/$username/idena-go/idena_insp_$username.sh
 chown $username:$username /home/$username/idena-go/idena_insp_$username.sh
 if [ "$idupdate" = 'n' ]; then
-read -p $'\e[33mPlease insert \e[32mthe frequency \e[91m in cron schedule expressions format \e[33mwhen the script will be checking for updates. \n\e[31m\e[1mEmpty prompt \e[33mwill set the value to run it \e[32monce a day at 1AM:\e[0m ' idupdate
+read -p $'\e[33mPlease insert \e[32mthe frequency \e[91min cron schedule expression format \e[33mwhen the script will be checking for updates. \n\e[31m\e[1mEmpty prompt \e[33mwill set the value to run it \e[32monce a day at 1AM:\e[0m ' idupdate
 if [[ -z $idupdate ]]; then idupdate=$(echo "0 1 * * *") ; echo "Set as default $idupdate"; fi
 fi    
 echo "$idupdate $username /home/$username/idena-go/idena_insp_$username.sh" > /etc/cron.d/idena_update_$username
