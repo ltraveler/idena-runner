@@ -99,7 +99,7 @@ That will overwrite all required files.
 7. `systemctl daemon-reload` and `systemctl reset-failed` _updating systemctl changes that we have made in the previous step_;
 8. `ufw show added | grep "IDENA Instance for user $username" | awk '{ gsub("ufw","ufw delete",$0); system($0)}'` do not forget to replace `$username` to the real name of deleted user;
 9. `sudo visudo` you have to find and delete the line related to the deleted user at the end of the file;
-10. `nano /etc/ssh/sshd_config` - you have to delete the username from _DenyUsers_ group;
+10. `nano /etc/ssh/sshd_config` - you have to delete username from _DenyUsers_ group;
 11. `sudo sshd -t` - to be sure that your latest changes of _sshd_config_ file is correct;
 12. `sudo service sshd restart` - to restart _sshd daemon_.
 
