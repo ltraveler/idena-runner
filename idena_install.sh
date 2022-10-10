@@ -34,7 +34,7 @@ fi
 eval set -- "$PARSED"
 username='n' password='n' version='n' shared_node='n' bp_threshold='0.3' fp_threshold='1' af_time='7200000000000' nrpcport='n' nipfsport='n' privatekey='n' nodeapikey='n' idupdate='n' 
 if [ "$shared_node" = "true" ]; then
-echo 'incorrect argument for ${LYELLOW}-s${NC} | ${LYELLOW}--shared ${NC}flag'
+echo -e 'incorrect argument for ${LYELLOW}-s${NC} | ${LYELLOW}--shared ${NC}flag'
 fi
 # 
 while true; do
