@@ -104,7 +104,7 @@ fi
 #updating Ubuntu and installing all required dependencies
 apt-get update
 apt-get upgrade -y
-reqpkgs=('jq' 'git' 'ufw' 'curl' 'wget' 'nano' 'screen' 'psmisc' 'unzip')
+reqpkgs=('jq' 'git' 'ufw' 'curl' 'wget' 'nano' 'screen' 'psmisc' 'unzip' 'netcat-traditional')
 for x in "${reqpkgs[@]}"; do
 dpkg -s "$x" &> /dev/null
 if [ $? != 0 ]; then
