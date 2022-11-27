@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.4.2 (Nov 27, 2022)
+
+### Bug Fixes
+
+- **ARM64**: update script won't start upgrading process in case if `idena-go` binary has the same size as the local one
+
 ## 0.4.1 (Nov 26, 2022)
 
 ### Changes
