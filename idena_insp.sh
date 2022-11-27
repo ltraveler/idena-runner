@@ -25,9 +25,9 @@ if [[ "$version" = "arm64" ]]
 then
 	echo "Checking if there is any update..."
 	sudo service idena_$username stop
+	cd /home/$username/idena-go
 	wget -r -N -c -np -nd https://github.com/ltraveler/idena-go-arm64/raw/main/idena-go
 	chmod +x idena-go
-	mv idena-go /home/$username/idena-go/idena-node
 	sudo service idena_$username start
 	echo -e "${LRED}IDENA NODE HAS BEEN SUCCESSFULLY UPDATED${NC}"
 fi
