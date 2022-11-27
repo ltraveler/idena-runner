@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.4.1 (Nov 26, 2022)
+
+### Changes
+
+- Now Idena Runner compatible with `ARM64` servers like `Raspberry Pi`, `Ampere A1 Compute` and so on.<br><b>ATTENTION:</b> <ins><i>If you have a mobile device you have to use [IDENA ARMer script](https://github.com/ltraveler/idena-armer).</i></ins>
+
+
 ## 0.3.7 (July 8, 2022)
 
 ### Bug Fixes
