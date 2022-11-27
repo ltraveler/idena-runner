@@ -204,11 +204,11 @@ if [ "$(id -u)" -eq 0 ]; then
 		echo "$username exists! Let's kill existed idena installation."
         rm -r /home/$username/idena-go ||:
         rm -f /etc/cron.d/idena_update_$username ||:
-        pass=$(openssl passwd -crypt $password)
+        pass=$(openssl passwd -5 $password)
         usermod --password $pass $username
         grep -q "$username ALL=NOPASSWD: /usr/sbin/service idena_$username *" /etc/sudoers || echo "$username ALL=NOPASSWD: /usr/sbin/service idena_$username *" >> /etc/sudoers
 	else
-        pass=$(openssl passwd -crypt $password)
+        pass=$(openssl passwd -5 $password)
 		useradd -s /bin/bash -m -p $pass $username
 		[ $? -eq 0 ] && echo "User has been added to system!" || echo "Failed to add a user!"
         #add only if sudoers record doesn't exist 
@@ -223,12 +223,13 @@ chown $username:$username /run/screen/S-$username
 mkdir /home/$username/idena-go
 #cd /home/$username/idena-go  
 #downloading specific version or the latest one
+if [[ $(dpkg --print-architecture) == *arm64* ]]; then version="arm64"; fi
 if [ "$version" = 'latest'  ]; then version=$(curl -s https://api.github.com/repos/idena-network/idena-go/releases/latest | grep -Po '"tag_name":.*?[^\\]",' | sed 's/"tag_name": "v//g' |  sed 's/",//g') ; echo Installing version $version; fi 
 if [ "$version" = 'n'  ]; then read -p "$(echo -e ${LYELLOW}Enter the number of the idena-go version \(eg. ${LRED}0.18.2\)${LYELLOW} ${LGREEN}keep it empty ${LYELLOW}to download the latest one:${NC} )" version; fi
 if [ -z $version ]; then version=$(curl -s https://api.github.com/repos/idena-network/idena-go/releases/latest | grep -Po '"tag_name":.*?[^\\]",' | sed 's/"tag_name": "v//g' |  sed 's/",//g') ; echo Installing version $version; fi
 touch /home/$username/idena-go/version
 echo "$version" >| /home/$username/idena-go/version
-wget https://github.com/idena-network/idena-go/releases/download/v$version/idena-node-linux-$version
+if [ "$version" != 'arm64' ]; then wget https://github.com/idena-network/idena-go/releases/download/v$version/idena-node-linux-$version; else wget https://github.com/ltraveler/idena-go-arm64/raw/main/idena-go; fi
 #customize config.json
 
 if [[ "$nrpcport" = 'n' && "$nipfsport" != 'n' ]]; then
@@ -252,7 +253,7 @@ fi
     
 #copying config.json and idena.service
 cp {config.json,idena.service} /home/$username/idena-go
-mv idena-node-linux-$version /home/$username/idena-go/idena-node
+if [ "$version" != 'arm64' ]; then mv idena-node-linux-$version /home/$username/idena-go/idena-node; else mv idena-go /home/$username/idena-go/idena-node; fi
 chown -R $username:$username /home/$username/idena-go
 #checking if ipfs port is opened
 ipfsport=($(jq -r '.IpfsConf.IpfsPort' /home/$username/idena-go/config.json))
@@ -374,7 +375,7 @@ fi
 echo "$idupdate $username /home/$username/idena-go/idena_insp_$username.sh" > /etc/cron.d/idena_update_$username
 #crontab -l | grep -q "idena_insp_$username"  && echo 'entry exists' || (crontab -l 2>/dev/null; echo "$idupdate /home/$username/idena-go/idena_insp_$username.sh") | crontab -
 # ufw configuration
-SSHPORT=${SSH_CLIENT##* }
+SSHPORT=${SSH_CLIENT:-##* }
 ufw allow $SSHPORT
 ufw allow "OpenSSH"
 ipfsport=($(jq -r '.IpfsConf.IpfsPort' /home/$username/idena-go/config.json))
