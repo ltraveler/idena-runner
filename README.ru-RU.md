@@ -134,7 +134,7 @@ _удаляем cron задачу, которая была создана для
 _удаляем демона idena привязанного к этому пользователю_
 6. `systemctl disable idena_username`\
 _отключаем демона idena привязанного к этому пользователю_
-7. `systemctl daemon-reload` и `systemctl reset-failed`\
+7. `systemctl daemon-reload && systemctl reset-failed`\
 _обновление изменений в systemctl которые мы сделали на предыдущем шаге_
 8. `ufw show added | grep "IDENA Instance for user $username" | awk '{ gsub("ufw","ufw delete",$0); system($0)}'`\
 _не забудьте изменить `$username` на имя удалённого пользователя от которого запускалась инстанция идены_
