@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.4.3 (Nov 28, 2022)
+
+### Bug Fixes
+
+- SSH port detection fix
+
 ## 0.4.2 (Nov 27, 2022)
 
 ### Bug Fixes
